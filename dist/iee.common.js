@@ -9,6 +9,45 @@
     (global.Iee = factory());
 }(this, (function () { 'use strict';
 
+    const CONFIGS = {
+        /**
+         * Component
+         * @var {String} component The type of component 
+         */
+        component: undefined,
+
+        /**
+         * Dispatcher Origin 
+         * @var {String|Array} targetOrigin The origin of the reciever component
+         */
+        dispatcherOrigin: '*',
+
+        /**
+         * Receiver Origin 
+         * @var {String|Array} targetOrigin The origin of the reciever component
+         */
+        receiverOrigin: '*'
+    };
+
+    var store = {};
+
+    /**
+     * Get a configuration
+     * @param {String} config Name of a config 
+     */
+    function get(config){
+        return store[config]
+
+    }
+
+    /**
+     * Assign a given set of configuration options
+     * @param {Object} options Configuration to set
+     */
+    function set(options){
+        store = Object.assign(CONFIGS, options);
+    }
+
     /**
      * Hooks
      * @var {Array} global hooks defining application state
@@ -88,7 +127,7 @@
      * @param {String} name Key name of hook located in the store
      * @return {Array} hooks Global hooks defining application state
      */
-    function list(name){
+    function list$1(name){
         return name ? STORE[name] : STORE
     }
 
@@ -163,10 +202,7 @@
                 return; 
             }
             
-            // Dispatch a message to any target
-            // TODO 
-            // add target to options
-            TARGET.postMessage(payload, '*');
+            TARGET.postMessage(payload, get('receiverOrigin') );
             
 
         } catch(e) {
@@ -251,24 +287,24 @@
         'string', 
         'object'
     ];
+
     /**
      * Handle dispatched events
      * @param {Object} event A dispatched event from post message
      */
     function handler(event) {
        
-        // Trust established?
-        // TODO 
-        //if (event.origin.match(new RegExp('^'+this.reciever.origin+'$')))
-            //  this.logger(event.origin + 'is not trusted')
-            //  return
+        if(!trused(event.origin)){
+            return
+        }
+
         if(event.data){
             
             try{    
                 if( 
                     isSupported(event) &&
-                    list('created').lifecycle === true &&  
-                    list('mounted').lifecycle === true
+                    list$1('created').lifecycle === true &&  
+                    list$1('mounted').lifecycle === true
                 ){
                     emit(event.data.event, event.data);    
                 }
@@ -289,6 +325,30 @@
         }
     }
 
+    /**
+     * Establish trust
+     * @param {String} origin The origin where communication originated
+     * @return {Boolean} trusted A truthy value
+     */
+    function trused(origin){
+        let originWhitelist = get('dispatcherOrigin');
+        
+        if(typeof originWhitelist === 'string' && originWhitelist === '*'){
+            return true
+        }
+
+        if(typeof originWhitelist === 'object'){
+            for(var i = 0; i < originWhitelist.length; i++){
+                if(originWhitelist[i] === origin){
+                    return true
+                }
+            }    
+        }
+
+        console.warn(new Date(), '\n', 'received untrused message from ' + origin); 
+
+        return false
+    }
     /**
      * 
      * @param {String} type A case-sensitive string representing the event type to emit
@@ -311,27 +371,20 @@
      * @return null
      */
     function boot$3 () {
+        
+        set(this);
         boot();
         boot$1();
         boot$2();   
     }
 
     function Iee (options) {    
-        this.defaults = {
-            component:  options && options.component || null,
-            suppoPtedTypes: options && options.supportedTypes || ['string', 'object'] // structured clone algorithm only
-        };
-        
-        this.lifecycle = {
-            created: null,
-            mounted: null
-        };
 
-        boot$3.apply(this);
+        boot$3.apply(options);
 
-        if(this.defaults.component === 'dispatcher'){
+        if(options.component === 'dispatcher'){
             this.message = message;
-        } else if(this.defaults.component === 'reciever'){
+        } else if(options.component === 'reciever'){
             this.on = on;
         } else {
             console.warn(new Date(), '\n', 'did you register a component?');

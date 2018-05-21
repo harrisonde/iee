@@ -1,4 +1,5 @@
 import * as HOOKS from "../core/hooks"
+import { get as configsGet} from  "../core/configs"
 
 /**
  * Types
@@ -77,17 +78,17 @@ const SUPPORTED_MESSAGES_TYPE = [
     'string', 
     'object'
 ]
+
 /**
  * Handle dispatched events
  * @param {Object} event A dispatched event from post message
  */
 function handler(event) {
    
-    // Trust established?
-    // TODO 
-    //if (event.origin.match(new RegExp('^'+this.reciever.origin+'$')))
-        //  this.logger(event.origin + 'is not trusted')
-        //  return
+    if(!trused(event.origin)){
+        return
+    }
+
     if(event.data){
         
         try{    
@@ -115,6 +116,30 @@ function handler(event) {
     }
 }
 
+/**
+ * Establish trust
+ * @param {String} origin The origin where communication originated
+ * @return {Boolean} trusted A truthy value
+ */
+function trused(origin){
+    let originWhitelist = configsGet('dispatcherOrigin')
+    
+    if(typeof originWhitelist === 'string' && originWhitelist === '*'){
+        return true
+    }
+
+    if(typeof originWhitelist === 'object'){
+        for(var i = 0; i < originWhitelist.length; i++){
+            if(originWhitelist[i] === origin){
+                return true
+            }
+        }    
+    }
+
+    console.warn(new Date(), '\n', 'received untrused message from ' + origin); 
+
+    return false
+}
 /**
  * 
  * @param {String} type A case-sensitive string representing the event type to emit

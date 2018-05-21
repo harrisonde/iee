@@ -1,5 +1,5 @@
 import * as HOOKS from "../core/hooks"
-
+import { get as configsGet} from  "../core/configs"
 /**
  * Register a hook 
  * @param {String} Name The name of hook
@@ -36,10 +36,7 @@ function message(payload) {
             return; 
         }
         
-        // Dispatch a message to any target
-        // TODO 
-        // add target to options
-        TARGET.postMessage(payload, '*');
+        TARGET.postMessage(payload, configsGet('receiverOrigin') );
         
 
     } catch(e) {

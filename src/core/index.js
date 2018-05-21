@@ -4,21 +4,12 @@ import { on } from "../components/reciever"
 
 
 function Iee (options) {    
-    this.defaults = {
-        component:  options && options.component || null,
-        suppoPtedTypes: options && options.supportedTypes || ['string', 'object'] // structured clone algorithm only
-    }
-    
-    this.lifecycle = {
-        created: null,
-        mounted: null
-    }
 
-    boot.apply(this)
+    boot.apply(options)
 
-    if(this.defaults.component === 'dispatcher'){
+    if(options.component === 'dispatcher'){
         this.message = message
-    } else if(this.defaults.component === 'reciever'){
+    } else if(options.component === 'reciever'){
         this.on = on
     } else {
         console.warn(new Date(), '\n', 'did you register a component?')
