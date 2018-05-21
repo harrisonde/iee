@@ -1,0 +1,34 @@
+{
+  "name": "iee",
+  "version": "1.0.0",
+  "description": "A progressive JavaScript framework for cross-origin communication",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup --config ./script/config.js --environment TARGET:web-common-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harrisonde/iee.git"
+  },
+  "author": "Harrison DeStefano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/harrisonde/iee/issues"
+  },
+  "homepage": "https://github.com/harrisonde/iee#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "install": "^0.11.0",
+    "npm": "^6.0.1",
+    "rollup": "^0.59.1",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0"
+  }
+}
