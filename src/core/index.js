@@ -1,7 +1,7 @@
-import { boot } from "./bootstrap"
-import { message } from "../components/dispatcher"
-import { on } from "../components/reciever"
-
+import { boot } from './bootstrap'
+import { message } from '../components/dispatcher'
+import { on } from '../components/reciever'
+import * as LOGGER from '../core/logger'
 
 function Iee (options) {    
 
@@ -12,9 +12,9 @@ function Iee (options) {
     } else if(options.component === 'reciever'){
         this.on = on
     } else {
-        console.warn(new Date(), '\n', 'did you register a component?')
+        LOGGER.log('did you register a component?')
     }
 
 }
  
-export default Iee
+export default Iee  

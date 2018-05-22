@@ -1,5 +1,6 @@
-import * as HOOKS from "../core/hooks"
-import { get as configsGet} from  "../core/configs"
+import * as HOOKS from '../core/hooks'
+import { get as configsGet} from '../core/configs'
+import * as LOGGER from '../core/logger'
 
 /**
  * Types
@@ -33,7 +34,7 @@ function boot(){
             arg.apply(this, [arg] ) 
         }
     }
-    HOOKS.register('received', callback);
+    HOOKS.register('received', callback)
     register()
 }
 
@@ -46,13 +47,10 @@ function register() {
     TYPES.forEach(function(type){
         try{
             on(type.type, type.listener)
-            //TARGET.addEventListener(, Iee.prototype.reciever.handler.bind(this), false);        
         } catch(e){
-            console.warn(new Date(), '\n', e);      
+            LOGGER.log(e)  
         }    
     })
-    //window.addEventListener("message", Iee.prototype.reciever.handler.bind(this), false); 
-    //window.addEventListener('build', Iee.prototype.reciever.on.bind(this), false);
 }
 
 /**
@@ -63,9 +61,9 @@ function register() {
  */
 function on(type, callback) {
     try{
-        TARGET.addEventListener(type, callback);
+        TARGET.addEventListener(type, callback)
     } catch(e){
-        console.warn(new Date(), '\n', e); 
+        LOGGER.log(e)
     }
 } 
 
@@ -97,22 +95,23 @@ function handler(event) {
                 HOOKS.list('created').lifecycle === true &&  
                 HOOKS.list('mounted').lifecycle === true
             ){
+                LOGGER.log(event)
                 emit(event.data.event, event.data)    
             }
             
         } catch(e){
-            console.warn(new Date(), '\n', e); 
+            LOGGER.log(e)
         }
     }
 
     function isSupported(MessageEvent){
-        var eventType = typeof MessageEvent.data;
+        var eventType = typeof MessageEvent.data
         for(var i = 0; i < SUPPORTED_MESSAGES_TYPE.length; i++){
             if(SUPPORTED_MESSAGES_TYPE[i] === eventType){
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 }
 
@@ -136,23 +135,23 @@ function trused(origin){
         }    
     }
 
-    console.warn(new Date(), '\n', 'received untrused message from ' + origin); 
+    LOGGER.log('received untrused message from ' + origin)
 
     return false
 }
 /**
- * 
+ * Emits event
  * @param {String} type A case-sensitive string representing the event type to emit
  * @param {Object} message A message to emit
  * @return null 
  */
 function emit(type, message){
     try{
-        var eventToEmit = new Event(type);
+        var eventToEmit = new Event(type)
         Object.assign(eventToEmit, message)
-        TARGET.dispatchEvent(eventToEmit);
+        TARGET.dispatchEvent(eventToEmit)
     } catch(e){
-        console.warn(new Date(), '\n', e); 
+        LOGGER.log(e) 
     }
 }
 

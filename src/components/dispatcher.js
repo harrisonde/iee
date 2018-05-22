@@ -1,5 +1,7 @@
-import * as HOOKS from "../core/hooks"
-import { get as configsGet} from  "../core/configs"
+import * as HOOKS from '../core/hooks'
+import { get as configsGet} from  '../core/configs'
+import * as LOGGER from '../core/logger'
+
 /**
  * Register a hook 
  * @param {String} Name The name of hook
@@ -11,7 +13,7 @@ function boot(){
             arg.apply(this, [arg] ) 
         }
     }
-    HOOKS.register('dispatched', callback);   
+    HOOKS.register('dispatched', callback)
 }
 
 /**
@@ -28,19 +30,16 @@ function message(payload) {
     try{
         
         if(!payload){ 
-            throw new Error('attempt to dispatch without payload');    
-            return; 
+            throw new Error('attempt to dispatch without payload')
         }
         else if(!payload.event){
-            throw new Error('attempt to dispatch without defining an event');    
-            return; 
+            throw new Error('attempt to dispatch without defining an event')
         }
         
-        TARGET.postMessage(payload, configsGet('receiverOrigin') );
-        
+        TARGET.postMessage(payload, configsGet('receiverOrigin') )
 
     } catch(e) {
-        console.warn(new Date(), '\n', e);
+        LOGGER.log(e)
     }
 }
 

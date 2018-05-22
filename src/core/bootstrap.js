@@ -1,7 +1,7 @@
-import * as CONFIGURATION from  "./configs"
-import * as HOOKS from "./hooks"
-import * as DISPATCHER from "../components/dispatcher"
-import * as RECIEVER from "../components/reciever"
+import * as CONFIGURATION from  './configs'
+import * as HOOKS from './hooks'
+import * as DISPATCHER from '../components/dispatcher'
+import * as RECIEVER from '../components/reciever'
 
 /**
  * Boot

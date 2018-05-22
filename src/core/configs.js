@@ -15,7 +15,13 @@ const CONFIGS = {
      * Receiver Origin 
      * @var {String|Array} targetOrigin The origin of the reciever component
      */
-    receiverOrigin: '*'
+    receiverOrigin: '*',
+
+    /**
+     * Silent
+     * @var {Boolean} silent 
+     */
+    silent: 'BUILD_TARGET' === 'web-min-js'
 }
 
 var store = {}
@@ -41,7 +47,7 @@ function set(options){
  * List all configurationa
  * @param {String} config Name of a config 
  */
-function list(config){
+function list(){
     return store
 }
 export { get, set, list }

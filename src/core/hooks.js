@@ -1,3 +1,5 @@
+import * as LOGGER from '../core/logger'
+
 /**
  * Hooks
  * @var {Array} global hooks defining application state
@@ -11,7 +13,7 @@ const HOOKS = [
  * Hooks store
  * @var {Array} global hooks registered to application
  */
-const STORE = [];
+const STORE = []
 
 /**
  * Binds hooks global.
@@ -28,12 +30,12 @@ function bind() {
         try{
             register(hook, callback, true)        
         } catch(e){
-            console.warn(new Date(), '\n', e)     
-        }    
+            LOGGER.log(e)     
+        } 
     })
 }
 
- /**
+/**
  * Call a hook
  * @param  {String} Name The name of a known hook
  * @param  {Array} args An list of arguments
@@ -55,7 +57,7 @@ function call (name, args) {
 function register (name, callback, lifecycle){
     try{
         if(!callback){
-           throw new Error('attempt to register ' + name + ' hook without callback')
+            throw new Error('attempt to register ' + name + ' hook without callback')
         }
         if(typeof STORE[name] === 'undefined'){
             STORE[name] = {
@@ -68,7 +70,7 @@ function register (name, callback, lifecycle){
             throw new Error('attempt to re-register ' + name)
         }     
     } catch(e){
-        console.warn(new Date(), '\n', e)
+        LOGGER.log(e)
     }
 }
 
