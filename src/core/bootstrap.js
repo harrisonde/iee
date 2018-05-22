@@ -1,7 +1,7 @@
 import * as CONFIGURATION from  './configs'
 import * as HOOKS from './hooks'
 import * as DISPATCHER from '../components/dispatcher'
-import * as RECIEVER from '../components/reciever'
+import * as RECEIVER from '../components/receiver'
 
 /**
  * Boot
@@ -13,7 +13,7 @@ function boot () {
     CONFIGURATION.set(this)
     HOOKS.boot()
     DISPATCHER.boot()
-    RECIEVER.boot()   
+    RECEIVER.boot()   
 }
 
 export { boot }

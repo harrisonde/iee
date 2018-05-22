@@ -24,7 +24,6 @@
     }
 
     function log(message) {
-        console.warn(get('silent'));
         if (!get('silent')) {
             console.warn(new Date(), '\n', message);
         }
@@ -213,7 +212,7 @@
         boot$3.apply(options);
         if (options.component === 'dispatcher') {
             this.message = message;
-        } else if (options.component === 'reciever') {
+        } else if (options.component === 'receiver') {
             this.on = on;
         } else {
             log('did you register a component?');

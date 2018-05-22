@@ -8,7 +8,6 @@ import * as CONFIGURATION from  './configs'
  * @return null
  */
 function log(message){
-    console.warn(CONFIGURATION.get('silent'))
     if(!CONFIGURATION.get('silent')){
         console.warn(new Date(), '\n', message)
     }

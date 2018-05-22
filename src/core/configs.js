@@ -12,7 +12,7 @@ const CONFIGS = {
     dispatcherOrigin: '*',
 
     /**
-     * Receiver Origin 
+     * Receiver Origin
      * @var {String|Array} targetOrigin The origin of the reciever component
      */
     receiverOrigin: '*',
