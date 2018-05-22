@@ -6,3 +6,5 @@ Iee (Iframe Event Emiiter) is a framework for sending communition cross-origin. 
 
 ### Compatibility 
 Iee offers support down to IE8
+
+Please review the Wiki for [setup](https://github.com/harrisonde/iee/wiki/Getting-Started)
