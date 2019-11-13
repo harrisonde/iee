@@ -1,7 +1,43 @@
-## Introduction
-iee (iframe event emitter) is a framework for sending comminution cross-origin. It is designed for projects were granting permission to resources on a different origin may not be possible. The core of the application focuses on simple one-way messaging between privileged and non-privileged pages.
+# Introduction
+Iframe Event Emitter is a zero-dependency module that allows transparent bidirectional communication across origins.
 
-### Compatibility 
-Iee offers support down to IE8
+## Documentation
+### Usage
+One-way messaging between privileged and non-privileged pages:
+```js
+    const IEE = require('@cidekar/iframe-event-emitter')
 
-Please review the Wiki for [setup](https://github.com/harrisonde/iee/wiki/Getting-Started)
+    // New-up an instance dispatcher
+    const dispatcher = new Iee({
+        component: 'dispatcher'
+    });
+
+    // New-up an instance receiver
+    const receiver = new Iee({
+        component: 'receiver'  
+
+    // Dispatch s single message
+    dispatcher.message({
+        event: 'confirm', 
+        message: 'Did you get my message?',
+    });
+
+    // Receive a message
+    receiver.on('confirm', function(event){
+        //... Handle message 
+    });
+
+```
+
+## API
+hooks
+    created
+    mounted
+config
+    dispatcher origin
+    receiver origin   
+dispatcher
+receiver
+event 
+message
+on

@@ -5,5 +5,8 @@
  * var ref = new Iee.listen()
  */
 
-//export { Iee as V } from '../../core/index'
-export { default } from '../../core/index'
+import IframeEventEmitter from '../../core/index'
+
+IframeEventEmitter.version = '__VERSION__'
+
+export default IframeEventEmitter
