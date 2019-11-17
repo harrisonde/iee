@@ -1,10 +1,8 @@
 import { AbstractKernel } from '../abstract/Kernel'
 import { Configuration } from './Configuration'
 import { SystemHooks } from './SystemHooks'
-// TODO
-
-import * as DISPATCHER from '../components/dispatcher'
-import * as RECEIVER from '../components/receiver'
+import { Dispatcher } from '../components/Dispatcher'
+import { Receiver } from '../components/Receiver'
 
 
 export class Kernel extends Configuration implements AbstractKernel{
@@ -17,18 +15,19 @@ export class Kernel extends Configuration implements AbstractKernel{
 
         this.setConfiguration(configuration)
 
-        
-        //HOOKS.boot()
         SystemHooks.boot()
 
-        //TODO
-        DISPATCHER.boot()
-        RECEIVER.boot()   
+        Dispatcher.boot()
+        
+        Receiver.boot()   
 
         SystemHooks.call('mounted')
 
     }
 
+    /**
+     * List the configuration of the system.
+     */
     listSystemConfiguration = () => Configuration.listConfiguration()
 
 } 

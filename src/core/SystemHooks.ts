@@ -28,41 +28,64 @@ export class SystemHooks implements AbstractHooks{
         SystemHooks.call('created')
     }
 
+    /**
+     * Fire and update a hook related event bound into the system store.
+     */
     static call = (name: string, args?: []) => {
         const hook = Kernel.listConfiguration('hooks')[name]
         if (typeof hook != 'undefined') {
-            hook.callback.apply(SystemHooks, [args])
+            if (hook.callback){
+                hook.callback.apply(SystemHooks, [args])
+            }
             hook.lifecycle = true
+            hook.lineage = hook.lineage.concat( ['call'])
         }
     }
 
-    static register = (name: string, callback) => {
-        // Access to the Kernel cache required... how is it possible without new-up?
+    /**
+     * Enter and record a hook related event into the system store.
+     */
+    static register = (name: string, callback: any = null, lifecycle: string = 'register') => {
         try {
-            if (!callback) {
-                throw new Error('attempt to register ' + name + ' hook without callback')
-            }
-            if (typeof Kernel.listConfiguration('hooks')[name] === 'undefined') {
+            const hook = Kernel.listConfiguration('hooks')[name]
+
+            if (typeof hook === 'undefined') {
                 let hook = {
                     [name]: {
-                        lifecycle: 'register',
-                        callback: callback
-
+                        lifecycle: lifecycle,
+                        callback: callback,
+                        lineage: [lifecycle]
                     }
                 }
                 Kernel.putConfiguration('hooks', hook)
-
-            } else {
-                throw new Error('attempt to re-register ' + name)
+            } else if (typeof hook != 'undefined') {
+                hook.callback = callback,
+                hook.lifecycle = lifecycle
+                hook.lineage = hook.lineage.concat([lifecycle])
             }
         } catch (e) {
             LOGGER.log(e)
         }
     }
 
+    // TODO
+    // Remove this utility method?!
     static list = (name: string) => {
         // Access to the Kernel cache required... how is it possible without new-up?
         return name ? STORE[name] : STORE
+    }
+
+    /**
+     * Helper method to confirm the system is ready to handle communication.
+     */
+    static ready = (): boolean => {
+        let isReady = false
+        console.log(Kernel.listConfiguration('hooks'))
+        const systemHooks = Kernel.listConfiguration('hooks')
+        if (systemHooks['created'].lifecycle && systemHooks['mounted'].lifecycle){
+            isReady = true
+        }
+        return isReady
     }
 
 }

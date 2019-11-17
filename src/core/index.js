@@ -1,20 +1,15 @@
-import { boot } from './bootstrap'
-import { message } from '../components/dispatcher'
-import { on } from '../components/receiver'
-import * as LOGGER from '../core/logger'
+import { Kernel } from './Kernel'
+import { Dispatcher } from '../components/Dispatcher'
+import { Receiver } from '../components/Receiver'
 
-function Iee (options) {    
+const SystemKernel = new Kernel()
 
-    boot.apply(options)
+export default function Rivet (options) {    
 
-    if(options.component === 'dispatcher'){
-        this.message = message
-    } else if(options.component === 'receiver'){
-        this.on = on
-    } else {
-        LOGGER.log('did you register a component?')
-    }
+    SystemKernel.boot(options)
+
+    this.dispatcher = Dispatcher
+
+    this.receiver = Receiver
 
 }
- 
-export default Iee  

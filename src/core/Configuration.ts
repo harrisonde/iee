@@ -18,7 +18,11 @@ interface Configs {
      * Build will maintain standard out logging events to the console.
      */
     silent: boolean;
-    
+
+     /**
+     * Always specify an exact target origin to mitigate XSS attack vector.
+     */
+    warningOrigin: boolean;
 }
 
 interface Store {
@@ -55,7 +59,8 @@ export class Configuration {
         component: undefined,
         dispatcherOrigin: '*',
         receiverOrigin: '*',
-        silent: false
+        silent: false,
+        warningOrigin: true
     }
 
     private static store: Store = {
@@ -68,7 +73,6 @@ export class Configuration {
     }
 
     static getConfiguration: Get = (configurationKey?:string) => {
-        console.log(configurationKey, Configuration.store.cache)
         if (configurationKey) return Configuration.store.cache[configurationKey]
         return {}
     }

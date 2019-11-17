@@ -21,5 +21,14 @@ describe('The kernel properly boots', () => {
     test('Kernel ran system mounted hook.', () => {
         expect(Kernel.listConfiguration('hooks').mounted.lifecycle).toBe(true)
     })
+
+    test('Kernel ran dispatcher hook.', () => {
+        expect(Kernel.listConfiguration('hooks').dispatcher.lineage).toStrictEqual(['boot','register'])
+    })
+
+    test('Kernel ran receiver hook.', () => {
+        expect(Kernel.listConfiguration('hooks').receiver.lineage).toStrictEqual(['boot', 'register'])
+    })
     
 })
+ 
