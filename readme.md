@@ -3,7 +3,7 @@ Rivet is a zero-dependency module for transparent bidirectional communication ac
 
 ## Documentation
 ### Usage
-One-way messaging between a privileged and non-privileged domain:
+#### One-way messaging between a privileged and non-privileged domain:
 
 Domain A
 ```js
@@ -38,7 +38,7 @@ Domain B
     });
 ```
 
-Bidirectional messaging between a privileged and non-privileged domain:
+#### Bidirectional messaging between a privileged and non-privileged domain:
 
 Domain A
 ```js
@@ -111,7 +111,7 @@ Domain B
 | Type           | Life Cycle | Description   | 
 | -------------  | ------------- | ------------- |
 | Created        |  Boot, Register, Call | System startup, prepare to enter, record, and processed a configuration.              |
-| Mounted        |   Boot, Register, Call | System has completely processed the configuration and ready to start messaging between components.            |
+| Mounted        |   Boot, Register, Call | System has completely processed the configuration and ready for communication.            |
 
 
 ## Life Cycle
