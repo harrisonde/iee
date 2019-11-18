@@ -113,8 +113,7 @@ Domain B
 | Created        |  Boot, Register, Call | System startup, prepare to enter, record, and processed a configuration.              |
 | Mounted        |   Boot, Register, Call | System has completely processed the configuration and ready for communication.            |
 
-
-## Life Cycle
+#### Life Cycle
 - Kernel is loaded executing a thin bootloader layer initializing the system.
 - System hooks are created, components set into a ready state, and system is mounted to a domain.
 - A new instance of the Dispatcher and Receiver are created returning methods for bidirectional communication bound to each domain Window object.
