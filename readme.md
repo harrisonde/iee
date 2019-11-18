@@ -33,19 +33,19 @@ One-way messaging between privileged and non-privileged pages:
 
 | Configuration      | Description   | 
 | -------------      | ------------- |
-| Dispatcher Origin  |               |
-| Receiver Origin    |               |
+| Dispatcher Origin  | The origin of Dispatcher component. |
+| Receiver Origin    | The origin of Receiver component.   |
 | Origin Warning     | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
 
 | Components     | Description   | 
 | -------------  | ------------- |
-| Dispatcher     |               |
-| Receiver       |               |
+| Dispatcher     | Organize, transfer, and send messages. |
+| Receiver       | Listen and handel message response.    |
 
 | Events         | Description   | 
 | -------------  | ------------- |
-| Message        |               |
-| On             |               |
+| Message        |  Message a target; { event: string, and message: string}  |
+| Listen         |  Listen for a message; { event: string, message: string } |
 
 | Hooks          | Description   | 
 | -------------  | ------------- |
