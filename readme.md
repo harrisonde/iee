@@ -55,7 +55,7 @@ Domain A
         //... handle the reply 
     })
 
-    // Dispatch single message from domain A.
+    // Dispatch a message from domain A.
     dispatcher.message({
         event: 'confirm', 
         message: 'Did you get my message?',
@@ -66,7 +66,7 @@ Domain B
 ```js
     const Rivet = require('@cidekar/rivet')
 
-    // New-up an instance if rivet 
+    // New-up an instance of rivet 
     const rivet = new Rivet()
 
     // New-up the receiver
@@ -89,16 +89,16 @@ Domain B
 
 ## API
 
-| Configuration      | Description   | 
-| -------------      | ------------- |
-| Dispatcher Origin  | The origin of Dispatcher component. |
-| Receiver Origin    | The origin of Receiver component.   |
-| Origin Warning     | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
+| Configuration | Description   | 
+| ------------- | ------------- |
+| Dispatcher Origin | The origin of Dispatcher component. |
+| Receiver Origin | The origin of Receiver component.   |
+| Origin Warning  | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
 
 | Components     | Description   | 
 | -------------  | ------------- |
-| Dispatcher     | Organize, transfer, and send messages. |
-| Receiver       | Listen and handel message response.    |
+| Dispatcher     | Create, serialize and transfer messages. |
+| Receiver       | Listen, validate, and handel messages. |
 
 | Events         | Description   | 
 | -------------  | ------------- |
