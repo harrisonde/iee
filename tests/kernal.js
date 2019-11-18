@@ -11,6 +11,9 @@ describe('The kernel properly boots', () => {
 
     test('System default configuration is properly applied.', () => {
         SystemKernel.boot()
+        
+       //console.log(SystemKernel.listSystemConfiguration('hooks'))
+    
         expect(SystemKernel.listSystemConfiguration()).toMatchObject(Configuration.listConfiguration())
     })
 

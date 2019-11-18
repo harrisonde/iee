@@ -142,8 +142,9 @@ export class ComponentBase implements AbstractComponentBase {
     /**
     * Setup component, change specific behaviors, and enable or disable features.
     */
-    static boot() {
-        const componentName = this.constructor.name.toLocaleLowerCase()
+    static boot(componentType?: string) {
+        const componentName = componentType ? 'dispatcher' : 'receiver'
+        
         SystemHooks.register(componentName, null, 'boot')
         let callback = arg => {
             if (typeof arg === 'function') {

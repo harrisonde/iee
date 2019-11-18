@@ -1,70 +1,16 @@
-import { AbstractComponentBase } from '../abstract/Component'
-import { SystemHooks } from '../core/SystemHooks'
-import { Kernel } from '../core/Kernel';
-
+import { SystemHooks } from '../core/SystemHooks';
+import { ComponentBase } from './ComponentBase';
 
 //TODO
-import * as LOGGER from '../core/logger'
-import { ComponentBase } from './ComponentBase';
+import * as LOGGER from '../core/logger';
 
 
 export class Receiver extends ComponentBase{
 
-    // Moved to Component base
-    // /**
-    // * Reference to the window that will receive the message
-    // */
-    // TARGET = window;
-
-    // Moved to Component Base
-    // /**
-    //  * Whitelist of supported types received.
-    //  */
-    // SUPPORTED_MESSAGES_TYPE = [
-    //     'string',
-    //     'object'
-    // ]
-
-
-    // TODO 
-    // Need to get this into the component
-    // private targetOrigin = Kernel.getConfiguration('dispatcherOrigin')
-    // private warningOrigin = Kernel.getConfiguration('warningOrigin')
-    
     constructor(){
         super('receiver')
-        // Moved to ComponentBase
-        // SystemHooks.call('receiver')
-        // this.bind()
     }
-
-    // /**
-    //  * A bit of syntactic sugar to setup a function to be called when a event is delivered to the target.
-    //  */
-    // public bind = () => {
-        
-    //     /**
-    //      * A case-sensitive string representing the event type to listen for.
-    //      */
-    //     const TYPES = [
-    //         {
-    //             type: 'message',
-    //             listener: this.handler
-    //         }
-    //     ]
-        
-    //     TYPES.forEach(type => {
-    //         try {
-    //             this.listen(type.type, type.listener)
-    //         } catch (e) {
-    //             LOGGER.log(e)
-    //         }
-    //     })
-    // }
-
-    /**
-     * Handle dispatched events.
-     */
+    
     handler = (event: object) => {
         if (!this.trusted(event.origin)) {
             return
@@ -91,73 +37,8 @@ export class Receiver extends ComponentBase{
         }
     }
 
-    /**
-    //  * Establish trust by validating the origin where communication originated.
-    //  */
-    // private trusted = (origin: string): boolean => { 
-    //     let isTrusted = false
-    //     let originWhitelist = Kernel.getConfiguration('dispatcherOrigin')
-
-    //     if (typeof originWhitelist === 'string' && originWhitelist === '*') {
-    //         isTrusted = true
-    //     }
-
-    //     if (typeof originWhitelist === 'object') {
-    //         for (var i = 0; i < originWhitelist.length; i++) {
-    //             if (originWhitelist[i] === origin) {
-    //                 isTrusted = true
-    //                 break
-    //             }
-    //         }
-    //     }
-    //     return isTrusted
-    // }
-
-    // /**
-    //  * Setup method to handle dispatched communication called on communication delivery.
-    //  */
-
-    // // was "on"
-    // private listen = (event: string, callback:any) => {
-    //     try {            
-    //         //console.log(`Added event listener to ${this.TARGET} for ${event} and cb ${callback}`)
-    //         this.TARGET.addEventListener(event, callback)
-    //     } catch (e) {
-    //         LOGGER.log(e)
-    //     }
-    // }
-
-    // /**
-    //  * Synchronously emits event message to a target.
-    //  */
-    // private emit = (type: string, message: object) => {
-    //     try {
-    //         const eventToEmit = new Event(type)
-    //         Object.assign(eventToEmit, message)
-    //         this.TARGET.dispatchEvent(eventToEmit)
-    //     } catch (e) {
-    //         LOGGER.log(e)
-    //     }
-    // }
-
-    // /**
-    //  * Validate the shape of the event.
-    //  */
-    // private isSupported = (event): boolean => { 
-    //     let supported = false
-    //     var eventType = typeof event.data
-    //     for (var i = 0; i < this.SUPPORTED_MESSAGES_TYPE.length; i++) {
-    //         if (this.SUPPORTED_MESSAGES_TYPE[i] === eventType) {
-    //             supported = true
-    //             break
-    //         }
-    //     }
-    //     return supported
-    // }
-
-    message = (payload, event?) => { // Alias for emit?
+    message = (payload, event?) => {
         try {
-            console.log('receiver message called')
             if (!payload) {
                 throw new Error('attempt to dispatch without payload')
             }
@@ -179,26 +60,9 @@ export class Receiver extends ComponentBase{
         } catch (e) {
             LOGGER.log(e)
         }
-    } 
-
-    // /**
-    //  * Put receiver into a ready state within the system.
-    //  */
-    // static boot = () => {
-    //     SystemHooks.register('receiver', null, 'boot')
-    //     Receiver.register()
-    // }
-
-    // /**
-    //  * Enter, record, fire, and update a hook related event into the system store.
-    //  */
-    // static register = () => {
-    //     let callback = arg => {
-    //         if (typeof arg === 'function') {
-    //             arg.apply(Receiver, [arg])
-    //         }
-    //     }
-    //     SystemHooks.register('receiver', callback)
-    // }
-
+    }
+    
+    static boot = () => { 
+        ComponentBase.boot('receiver')
+    }
 }

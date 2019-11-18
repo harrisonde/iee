@@ -23,6 +23,9 @@ export class SystemHooks implements AbstractHooks{
         })
     }
 
+    /**
+     * Start system, prepare to enter, record, and processed the configuration.
+     */
     static boot = () => {
         SystemHooks.bind()
         SystemHooks.call('created')
@@ -63,16 +66,11 @@ export class SystemHooks implements AbstractHooks{
                 hook.lifecycle = lifecycle
                 hook.lineage = hook.lineage.concat([lifecycle])
             }
+
+            console.log(Kernel.listConfiguration('hooks'))
         } catch (e) {
             LOGGER.log(e)
         }
-    }
-
-    // TODO
-    // Remove this utility method?!
-    static list = (name: string) => {
-        // Access to the Kernel cache required... how is it possible without new-up?
-        return name ? STORE[name] : STORE
     }
 
     /**
@@ -80,8 +78,8 @@ export class SystemHooks implements AbstractHooks{
      */
     static ready = (): boolean => {
         let isReady = false
-        console.log(Kernel.listConfiguration('hooks'))
         const systemHooks = Kernel.listConfiguration('hooks')
+        if (!systemHooks) return isReady
         if (systemHooks['created'].lifecycle && systemHooks['mounted'].lifecycle){
             isReady = true
         }
