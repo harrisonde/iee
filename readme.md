@@ -89,11 +89,11 @@ Domain B
 
 ## API
 ### Configuration
-| Option | Description   | 
-| ------------- | ------------- |
-| Dispatcher Origin | The origin of Dispatcher component. |
-| Receiver Origin | The origin of Receiver component.   |
-| Origin Warning  | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
+| Option | Default | Description   | 
+| ------------- | ------------- | ------------- |
+| Dispatcher Origin | * | The origin of Dispatcher component. |
+| Receiver Origin | * | The origin of Receiver component.   |
+| Origin Warning  | True | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
 
 ### Components
 | Type     | Description   | 
