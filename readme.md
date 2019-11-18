@@ -50,6 +50,7 @@ Domain A
     // New-up the dispatcher
     const dispatcher = new rivet.dispatcher();
 
+    // Receive a message from domain B.
     dispatcher.listen('response', function (event) {
         //... handle the reply 
     })
@@ -76,7 +77,7 @@ Domain B
         receiver.message(response, event)
     }
 
-    // Receive a message on domain B.
+    // Receive a message from domain A and reply.
     receiver.listen('confirm', function(event){
         reply({
             event: 'response',
