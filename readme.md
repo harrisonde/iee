@@ -1,9 +1,11 @@
 # Introduction
-Rivet is a zero-dependency module that fasten separate domains to establish transparent bidirectional communication across origins.
+Rivet is a zero-dependency module for transparent bidirectional communication across origins by fastening separate domains together.
 
 ## Documentation
 ### Usage
-One-way messaging between privileged and non-privileged pages:
+One-way messaging between a privileged and non-privileged domain:
+
+Domain A
 ```js
     const Rivet = require('@cidekar/rivet')
 
@@ -13,18 +15,73 @@ One-way messaging between privileged and non-privileged pages:
     // New-up the dispatcher
     const dispatcher = new rivet.dispatcher();
 
+    // Dispatch single message from domain A.
+    dispatcher.message({
+        event: 'confirm', 
+        message: 'Did you get my message?',
+    });
+```
+
+Domain B
+```js
+    const Rivet = require('@cidekar/rivet')
+
+    // New-up an instance if rivet 
+    const rivet = new Rivet()
+
     // New-up the receiver
     const receiver = new rivet.receiver();
+
+    // Receive a message on domain B.
+    receiver.listen('confirm', function(event){
+        //... Handle message 
+    });
+```
+
+Bidirectional messaging between a privileged and non-privileged domain:
+
+Domain A
+```js
+    const Rivet = require('@cidekar/rivet')
+
+    // New-up an instance if rivet 
+    const rivet = new Rivet()
+    
+    // New-up the dispatcher
+    const dispatcher = new rivet.dispatcher();
+
+    dispatcher.listen('response', function (event) {
+        //... handle the reply 
+    })
 
     // Dispatch single message from domain A.
     dispatcher.message({
         event: 'confirm', 
         message: 'Did you get my message?',
     });
+```
+
+Domain B
+```js
+    const Rivet = require('@cidekar/rivet')
+
+    // New-up an instance if rivet 
+    const rivet = new Rivet()
+
+    // New-up the receiver
+    const receiver = new rivet.receiver();
+
+    // A Simple reply function
+    function reply(response, event) {
+        receiver.message(response, event)
+    }
 
     // Receive a message on domain B.
     receiver.listen('confirm', function(event){
-        //... Handle message 
+        reply({
+            event: 'response',
+            message: 'Yes. Thank you for asking!',
+        })
     });
 
 ```
