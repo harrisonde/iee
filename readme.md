@@ -108,10 +108,10 @@ Domain B
 | Listen         |  Listen for a message; { event: string, message: string } |
 
 ### Hooks
-| Type           | Description   | 
-| -------------  | ------------- |
-| Created        |  System startup, prepare to enter, record, and processed a configuration.              |
-| Mounted        |  System has completely processed the configuration and ready to start messaging between components.            |
+| Type           | Life Cycle | Description   | 
+| -------------  | ------------- | ------------- |
+| Created        |  Boot, Register, Call | System startup, prepare to enter, record, and processed a configuration.              |
+| Mounted        |   Boot, Register, Call | System has completely processed the configuration and ready to start messaging between components.            |
 
 
 ## Life Cycle
