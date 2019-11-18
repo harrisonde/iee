@@ -88,24 +88,27 @@ Domain B
 ```
 
 ## API
-
-| Configuration | Description   | 
+### Configuration
+| Option | Description   | 
 | ------------- | ------------- |
 | Dispatcher Origin | The origin of Dispatcher component. |
 | Receiver Origin | The origin of Receiver component.   |
 | Origin Warning  | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
 
-| Components     | Description   | 
+### Components
+| Type     | Description   | 
 | -------------  | ------------- |
 | Dispatcher     | Create, serialize and transfer messages. |
 | Receiver       | Listen, validate, and handel messages. |
 
-| Events         | Description   | 
+### Events
+| Type         | Description   | 
 | -------------  | ------------- |
 | Message        |  Message a target; { event: string, and message: string}  |
 | Listen         |  Listen for a message; { event: string, message: string } |
 
-| Hooks          | Description   | 
+### Hooks
+| Type           | Description   | 
 | -------------  | ------------- |
 | Created        |  System startup, prepare to enter, record, and processed a configuration.              |
 | Mounted        |  System has completely processed the configuration and ready to start messaging between components.            |
