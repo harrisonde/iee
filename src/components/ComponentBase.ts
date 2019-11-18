@@ -21,7 +21,7 @@ export class ComponentBase implements AbstractComponentBase {
     warningOrigin = null
 
     constructor(componentType: string) {
-
+        
         this.warningOrigin = Kernel.getConfiguration('warningOrigin')
 
         // TOD0
@@ -36,6 +36,7 @@ export class ComponentBase implements AbstractComponentBase {
             this.targetOrigin = Kernel.getConfiguration('dispatcherOrigin')
         }
 
+        
         SystemHooks.call(componentType)
 
         this.bind(componentType)

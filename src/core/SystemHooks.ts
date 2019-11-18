@@ -41,8 +41,9 @@ export class SystemHooks implements AbstractHooks{
                 hook.callback.apply(SystemHooks, [args])
             }
             hook.lifecycle = true
-            hook.lineage = hook.lineage.concat( ['call'])
+            hook.lineage = hook.lineage.concat( ['ready'])
         }
+        console.log(Kernel.listConfiguration('hooks'))
     }
 
     /**
@@ -66,8 +67,6 @@ export class SystemHooks implements AbstractHooks{
                 hook.lifecycle = lifecycle
                 hook.lineage = hook.lineage.concat([lifecycle])
             }
-
-            console.log(Kernel.listConfiguration('hooks'))
         } catch (e) {
             LOGGER.log(e)
         }

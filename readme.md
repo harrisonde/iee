@@ -110,8 +110,11 @@ Domain B
 ### Hooks
 | Type           | Life Cycle | Description   | 
 | -------------  | ------------- | ------------- |
-| Created        |  Boot, Register, Call | System startup, prepare to enter, record, and processed a configuration.              |
-| Mounted        |   Boot, Register, Call | System has completely processed the configuration and ready for communication.            |
+| Created        |  Register and Ready | System startup, prepare to enter, record, and processed a configuration.              |
+| Mounted        |  Register and Ready | System has completely processed the configuration and ready for communication.            |
+| Dispatcher     |  Boot, Register, and Ready | The dispatcher is booted, registered into the system, and ready for communication.            |
+| Receiver     |  Boot, Register, and Ready | The dispatcher is booted, registered into the system, and ready for communication.            |
+
 
 #### Life Cycle
 - Kernel is loaded executing a thin bootloader layer initializing the system.
