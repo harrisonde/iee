@@ -1,7 +1,6 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/69078944-eff34300-0a06-11ea-8d94-10a6e54637b5.png" width="540" height="325"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/4164072/69078944-eff34300-0a06-11ea-8d94-10a6e54637b5.png" width="540" height="325"></p>
 
 <p align="center"><img src="https://img.shields.io/badge/License-Apache%202.0-brightgreen">&nbsp;<img src="https://img.shields.io/badge/npm-latest-blue.svg?maxAge=2592000"></p>
-
 
 ## Introduction
 Rivet is a zero-dependency module for transparent bidirectional communication across origins by fastening separate domains together.
