@@ -11,7 +11,7 @@ export class Receiver extends ComponentBase{
         super('receiver')
     }
     
-    handler = (event: object) => {
+    handler = (event: object): void => {
         if (!this.trusted(event.origin)) {
             return
         }
@@ -30,7 +30,7 @@ export class Receiver extends ComponentBase{
         }
     }
 
-    message = (payload, event?) => {
+    message = (payload, event?): void => {
         try {
             if (!payload) {
                 throw new Error('attempt to dispatch without payload')
@@ -55,7 +55,7 @@ export class Receiver extends ComponentBase{
         }
     }
     
-    static boot = () => { 
+    static boot = (): void => { 
         ComponentBase.boot('receiver')
     }
 }

@@ -1,4 +1,4 @@
-import { Kernel } from '../src/core/Kernel.ts'
+import { Kernel } from '../src/core/Kernel'
 import { Dispatcher } from '../src/components/Dispatcher'
 import { Configuration } from '../src/core/Configuration'
 

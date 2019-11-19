@@ -1,4 +1,4 @@
-import { Kernel } from '../src/core/Kernel.ts'
+import { Kernel } from '../src/core/Kernel'
 import { Receiver } from '../src/components/Receiver'
 import { Configuration } from '../src/core/Configuration'
 

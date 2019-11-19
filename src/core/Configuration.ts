@@ -35,21 +35,21 @@ interface Get {
     /**
     * Get a configuration by its key.
     */
-   (configurationKey: string): string;
+    (configurationKey: string): object;
 }
 
 interface List {
     /**
     * List ALL configuration options from the Store cache.
     */
-    (): any;
+    (): object | [] | string;
 }
 
 interface Set {
     /**
     * Assign a given set of configuration options to the Store cache 
     */
-    (configurationOptions): boolean;
+    (configurationOptions): boolean | Error;
 }
 
 
@@ -72,20 +72,20 @@ export class Configuration {
         Configuration.store.cache = this.configuration
     }
 
-    static getConfiguration: Get = (configurationKey?:string) => {
+    static getConfiguration: Get = (configurationKey?: string): object => {
         if (configurationKey) return Configuration.store.cache[configurationKey]
         return {}
     }
 
-    static listConfiguration: List = (vaultKey:string = 'cache') => {
+    static listConfiguration: List = (vaultKey = 'cache'): object | [] | string => {
         return Configuration.store[vaultKey]
     }
 
-    static putConfiguration = (vault = 'cache', configuration) => {
+    static putConfiguration = (vault = 'cache', configuration): void => {
         Object.assign(Configuration.store[vault], configuration)
     }
 
-    setConfiguration: Set = (configurationOptions) => {
+    setConfiguration: Set = (configurationOptions): boolean | Error => {
         try {
             Configuration.store.cache = Object.assign(Configuration.store.cache, configurationOptions)
             return true

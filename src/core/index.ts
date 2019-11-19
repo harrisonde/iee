@@ -4,7 +4,7 @@ import { Receiver } from '../components/Receiver'
 
 const SystemKernel = new Kernel()
 
-export default function Rivet (options) {    
+export default function Rivet (options): void {    
 
     SystemKernel.boot(options)
 

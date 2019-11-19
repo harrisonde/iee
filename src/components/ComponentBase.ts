@@ -21,7 +21,6 @@ export class ComponentBase implements AbstractComponentBase {
     warningOrigin = null
 
     constructor(componentType: string) {
-        
         this.warningOrigin = Kernel.getConfiguration('warningOrigin')
 
         // TOD0
@@ -43,19 +42,19 @@ export class ComponentBase implements AbstractComponentBase {
     }
 
 
-    bind = (componentType) => {
+    bind = (): void => {
         this.listen('message', this.handler)
     }
 
-    listen = (event: string, callback: any) => {
+    listen = (eventType: string, callback: Function): void => {
         try {
-            this.target.addEventListener(event, callback)
+            this.target.addEventListener(eventType, callback)
         } catch (e) {
             LOGGER.log(e)
         }
     }
 
-    handler = (event) => {
+    handler = (event): void => {
         
         // Validate origin 
         if (!this.trusted(event.origin)) {
@@ -78,7 +77,7 @@ export class ComponentBase implements AbstractComponentBase {
         }
     }
 
-    emit = (type: string, message: object) => {
+    emit = (type: string, message: object): void => {
         try {
             const eventToEmit = new Event(type)
             Object.assign(eventToEmit, message)
@@ -90,8 +89,7 @@ export class ComponentBase implements AbstractComponentBase {
 
     isSupported = (event): boolean => {
         let supported = false
-        var eventType = typeof event.data
-        for (var i = 0; i < this.supported_message_types.length; i++) {
+        for (let i = 0; i < this.supported_message_types.length; i++) {
             if (this.supported_message_types[i] === typeof event.data) {
                 supported = true
                 break
@@ -100,7 +98,7 @@ export class ComponentBase implements AbstractComponentBase {
         return supported
     }
 
-    message = payload => {
+    message = (payload): void => {
         
         try {
 
@@ -123,14 +121,14 @@ export class ComponentBase implements AbstractComponentBase {
 
     trusted = (origin: string): boolean => {
         let isTrusted = false
-        let originWhitelist = Kernel.getConfiguration('dispatcherOrigin')
+        const originWhitelist = Kernel.getConfiguration('dispatcherOrigin')
 
         if (typeof originWhitelist === 'string' && originWhitelist === '*') {
             isTrusted = true
         }
 
         if (typeof originWhitelist === 'object') {
-            for (var i = 0; i < originWhitelist.length; i++) {
+            for (let i = 0; i < originWhitelist.length; i++) {
                 if (originWhitelist[i] === origin) {
                     isTrusted = true
                     break
@@ -143,11 +141,11 @@ export class ComponentBase implements AbstractComponentBase {
     /**
     * Setup component, change specific behaviors, and enable or disable features.
     */
-    static boot(componentType?: string) {
+    static boot(componentType?: string): void {
         const componentName = componentType ? 'dispatcher' : 'receiver'
         
         SystemHooks.register(componentName, null, 'boot')
-        let callback = arg => {
+        const callback = (arg): void => {
             if (typeof arg === 'function') {
                 // TODO
                 // Need to fix

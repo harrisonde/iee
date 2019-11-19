@@ -11,10 +11,10 @@ export class Kernel extends Configuration implements AbstractKernel{
         super()
     }
    
-    boot = (configuration?: object) => {
+    boot = (configuration?: object): void => {
 
         this.setConfiguration(configuration)
-
+        
         SystemHooks.boot()
 
         Dispatcher.boot()
@@ -28,6 +28,6 @@ export class Kernel extends Configuration implements AbstractKernel{
     /**
      * List the configuration of the system.
      */
-    listSystemConfiguration = () => Configuration.listConfiguration()
+    listSystemConfiguration = (): object => Configuration.listConfiguration()
 
 } 

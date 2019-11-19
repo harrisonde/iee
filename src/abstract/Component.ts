@@ -27,7 +27,7 @@ export abstract class AbstractComponentBase {
     * When a message event is delivered to a target, establish a listener ready
     * to hear and handle said event.   
     */
-    abstract bind(componentType: string)
+    abstract bind(): void
     
     /**
      * Emits communication to a known target in scope. 
@@ -49,7 +49,7 @@ export abstract class AbstractComponentBase {
      * Listen for messages from expected targets by event name. The internal callback 
      * is invoked on communication delivery.
      */
-    abstract listen(event: Event, callback: Function  ) 
+    abstract listen(eventType: string, callback: Function  ) 
     
     /**
     * Validate the shape of the received message by type event.

@@ -3,8 +3,8 @@ import { Kernel } from './Kernel'
 
 export class SystemHooks {
 
-    static bind = () => {
-        const callback = (arg) => {
+    static bind = (): void => {
+        const callback = (arg): void => {
             if (typeof arg === 'function') {
                 //arg.apply(this, [arg])
             }
@@ -24,7 +24,7 @@ export class SystemHooks {
     /**
      * Start system, prepare to enter, record, and processed the configuration.
      */
-    static boot = () => {
+    static boot = (): void => {
         SystemHooks.bind()
         SystemHooks.call('created')
     }
@@ -32,7 +32,7 @@ export class SystemHooks {
     /**
      * Fire and update a hook related event bound into the system store.
      */
-    static call = (name: string, args?: []) => {
+    static call = (name: string, args?: []): void => {
         const hook = Kernel.listConfiguration('hooks')[name]
         if (typeof hook != 'undefined') {
             if (hook.callback){
@@ -46,12 +46,12 @@ export class SystemHooks {
     /**
      * Enter and record a hook related event into the system store.
      */
-    static register = (name: string, callback: any = null, lifecycle: string = 'register') => {
+    static register = (name: string, callback: Function = null, lifecycle = 'register'): void => {
         try {
             const hook = Kernel.listConfiguration('hooks')[name]
 
             if (typeof hook === 'undefined') {
-                let hook = {
+                const hook = {
                     [name]: {
                         lifecycle: lifecycle,
                         callback: callback,
