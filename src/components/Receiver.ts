@@ -23,13 +23,6 @@ export class Receiver extends ComponentBase{
                     }
                     LOGGER.log(event)
                     this.emit(event.data.event, event.data)
-                    
-                    // Try to send a response to the dispatcher
-                    event.source.postMessage({
-                        event: 'response',
-                        message: 'yes'
-                    }, event.origin)
-                    
                 }
             } catch (e) {
                 LOGGER.log(e)

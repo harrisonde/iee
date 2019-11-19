@@ -25,7 +25,7 @@ describe('The receiver component is well formed.', () => {
     test('Can new-up receiver.', () => {
         const receiver = new Receiver()
         expect(receiver).not.toBeUndefined()
-        expect(hooksConfiguration['receiver'].lineage).toStrictEqual(['boot','register', 'call'])
+        expect(hooksConfiguration['receiver'].lineage).toStrictEqual(['boot','register', 'ready'])
     })
 
 
@@ -36,7 +36,7 @@ describe('The receiver component is well formed.', () => {
 
     test('Obtain line of sight to the target.', () => {
         const receiver = new Receiver()
-        expect(receiver.TARGET).toBeTruthy()
+        expect(receiver.target).toBeTruthy()
     })
 
     test('Can receive communication from target.', () => {

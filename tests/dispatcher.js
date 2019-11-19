@@ -6,7 +6,8 @@ describe('The dispatcher component is well formed.', () => {
 
     const SystemKernel = new Kernel()
     SystemKernel.boot()
-    
+   
+
     const hooksConfiguration = Configuration.listConfiguration('hooks')
 
     // Now we may run our test
@@ -21,26 +22,26 @@ describe('The dispatcher component is well formed.', () => {
     })
 
     // New-up
-    test('Can new-up receiver.', () => {
-        const dispatcher = new Dispatcher()
+    test('Can new-up.', () => {
+        const dispatcher = new Dispatcher();
         expect(dispatcher).not.toBeUndefined()
-        expect(hooksConfiguration['dispatcher'].lineage).toStrictEqual(['boot', 'register', 'call'])
+        expect(hooksConfiguration['dispatcher'].lineage).toStrictEqual(['boot', 'register', 'ready'])
     })
 
     test('Has ability to send messages.', () => {
-        const dispatcher = new Dispatcher()
+        const dispatcher = new Dispatcher();
         expect(dispatcher.message).not.toBeUndefined()
     })
 
     test('Obtain line of sight to the target.', () => {
-        const dispatcher = new Dispatcher()
-        expect(dispatcher.TARGET.postMessage).toBeTruthy()
+        const dispatcher = new Dispatcher();
+        expect(dispatcher.target.postMessage).toBeTruthy()
     })
 
     test('Can send communication to target.', () => {
         // Mute warning for this test.
         console.warn = jest.fn((warning) => {});
-        const dispatcher = new Dispatcher()
+        const dispatcher = new Dispatcher();
         const payload = {
             event: 'confirm',
             message: 'Did you get my message?',
@@ -48,10 +49,9 @@ describe('The dispatcher component is well formed.', () => {
         expect(dispatcher.message(payload)).toBeUndefined()
     })
 
-    test('Receiver origin wildcard logs warning', () => {
-        // Mock 
+    test('Receiver origin wildcard logs warning', () => { 
         console.warn = jest.fn();
-        const dispatcher = new Dispatcher()
+        const dispatcher = new Dispatcher();
         const payload = {
             event: 'confirm',
             message: 'Did you get my message?',

@@ -3,43 +3,20 @@ export abstract class AbstractHooks {
     /**
      * Register hooks into system.
      */
-    ///abstract bind(): void
-    static bind () {}
+    static bind (): void {}
 
     /**
      * Hook caller by name.
      */
-    //abstract call(name, args): void
-    static call () {}
+    static call(): void {}
     
     /**
      * Register a hook.
      */
-    //abstract register(name: string, callback, lifeCycle): void
-    static register () {}
-    
-    /**
-    * List hooks registered into system.
-    */
-    //abstract list(name: string):[]
-    static list () {}
+    static register(): void {}
     
     /**
     * Boot hooks for usage by the system.
     */
-    //abstract boot(): void
-    static boot() { }
-
-    /**
-    * Track hooks while creating.
-    */
-    //abstract create()
-    static create () { }
-
-    /**
-    * Track global hooks while mounting.
-    */
-    //abstract mounted()
-    static mounted() { }
-    
+    static boot(): void {}
 }

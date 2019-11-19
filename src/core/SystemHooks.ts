@@ -1,9 +1,7 @@
-import { AbstractHooks } from '../abstract/Hooks'
-
 import * as LOGGER from './logger'
 import { Kernel } from './Kernel'
 
-export class SystemHooks implements AbstractHooks{
+export class SystemHooks {
 
     static bind = () => {
         const callback = (arg) => {
@@ -43,7 +41,6 @@ export class SystemHooks implements AbstractHooks{
             hook.lifecycle = true
             hook.lineage = hook.lineage.concat( ['ready'])
         }
-        console.log(Kernel.listConfiguration('hooks'))
     }
 
     /**

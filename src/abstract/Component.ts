@@ -43,13 +43,13 @@ export abstract class AbstractComponentBase {
     /**
      * Sends cross-origin communication between two targets.
      */
-    abstract message(payload: any)
+    abstract message(payload: object, event: Event)
 
     /*
      * Listen for messages from expected targets by event name. The internal callback 
      * is invoked on communication delivery.
      */
-    abstract listen(event: string, callback: any) 
+    abstract listen(event: Event, callback: Function  ) 
     
     /**
     * Validate the shape of the received message by type event.

@@ -15,7 +15,7 @@
         "build": "rollup --config ./config.js --environment BUILD_TARGET:web-js",
         "docs": "./node_modules/.bin/typedoc --disableOutputCheck --ignoreCompilerErrors --excludeExternals --out docs src --exclude \"node_modules/**/*\" --module umd --theme minimal",
         "test": "jest",
-        "lint": "./node_modules/.bin/eslint **/*.ts -c eslint-build.config"
+        "lint": "./node_modules/.bin/eslint **/*.ts -c eslint.config"
     },
     "devDependencies": {
         "@babel/core": "^7.6.4",
@@ -53,22 +53,5 @@
     "typedocOptions": {
         "mode": "modules",
         "out": "docs"
-    },
-    "babel": {
-        "env": {
-            "test": {
-                "presets": [
-                    [
-                        "@babel/preset-env",
-                        {
-                            "targets": {
-                                "node": "current"
-                            }
-                        }
-                    ],
-                    "@babel/preset-typescript"
-                ]
-            }
-        }
     }
 }
