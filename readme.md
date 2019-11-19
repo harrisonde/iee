@@ -3,7 +3,7 @@
 <p align="center"><img src="https://img.shields.io/badge/License-Apache%202.0-brightgreen">&nbsp;<img src="https://img.shields.io/badge/npm-latest-blue.svg?maxAge=2592000"></p>
 
 ## Introduction
-Rivet is a zero-dependency module for transparent bidirectional communication across origins by fastening separate domains together.
+Window Rivet is a zero-dependency module for transparent bidirectional communication across origins by fastening separate domains together using the Window object.
 
 ## Documentation
 ### Usage

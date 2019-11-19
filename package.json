@@ -1,14 +1,14 @@
 {
-    "name": "@cidekar/iframe-event-emitter",
+    "name": "@cidekar/window-rivet",
     "version": "1.0.0",
-    "description": "Iframe Event Emitter is a zero-dependency module that allows transparent bidirectional communication across origins.",
+    "description": "Window Rivet is a zero-dependency module for transparent bidirectional communication across origins by fastening separate domains together using the Window object.",
     "main": "dist/iee.js",
     "author": "Cidekar",
     "license": "Apache-2.0",
-    "homepage": "https://github.com/cidekar/iframe-event-emitter",
-    "bugs": "https://github.com/cidekar/iframe-event-emitter/issues",
+    "homepage": "https://github.com/cidekar/window-rivet",
+    "bugs": "https://github.com/cidekar/window-rivet/issues",
     "repository": {
-        "url": "https://github.com/cidekar/iframe-event-emitter",
+        "url": "https://github.com/cidekar/window-rivet",
         "type": "git"
     },
     "scripts": {
