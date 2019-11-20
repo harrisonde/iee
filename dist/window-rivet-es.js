@@ -1,6 +1,6 @@
 /**!
  * @cidekar/window-rivet version 1.0.0
- * (c) 2014-2019 Cidekar
+ * Copyright 2019 Cidekar, LLC
  * @license Released under the Apache-2.0 license.
  */
 /*! *****************************************************************************
@@ -346,12 +346,6 @@ var Kernel = /** @class */function (_super) {
             Dispatcher.boot();
             Receiver.boot();
             SystemHooks.call('mounted');
-        };
-        /**
-         * List the configuration of the system.
-         */
-        _this.listSystemConfiguration = function () {
-            return Configuration.listConfiguration();
         };
         return _this;
     }

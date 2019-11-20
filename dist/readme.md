@@ -1,6 +1,7 @@
-# Build Files Demystified
+## The build files, demystified:
 
-| | UMD | Log Messages | Minified |
-| --- | --- | --- | --- |
-| **Full** | iee.js | True | False |
-| **Full (production)** | iee.min.js | False | True |
+| File Name                   | Type       | Log Messages | Minified | Environment |
+| --------------------------- | ---------- | ------------ | -------- | ----------- |
+| **window-rivet-es.js**      | ES         | True         | False    | Node        |
+| **window-rivet-umd.js**     | UMD        | True         | False    | Browser     |
+| **window-rivet-umd-min.js** | UMD        | False        | True     | Browser     |

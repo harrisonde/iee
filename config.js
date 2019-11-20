@@ -7,51 +7,79 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import rollupJson from 'rollup-plugin-json'
 import typescript from 'rollup-plugin-typescript';
-const config = require('./package.json')
+const packageConfig = require('./package.json')
 
 const banner =
     '/**!\n' +
-    ' * ' + config.name + ' version ' + config.version + '\n' +
-    ' * (c) 2014-' + new Date().getFullYear() + ' ' + config.author + '\n' +
-    ' * @license Released under the ' + config.license + ' license.\n' +
+    ' * ' + packageConfig.name + ' version ' + packageConfig.version + '\n' +
+    ' * Copyright ' + new Date().getFullYear() + ' ' + packageConfig.author + '\n' +
+    ' * @license Released under the ' + packageConfig.license + ' license.\n' +
     ' */'
 
-const name = 'IframeEventEmitter'
+const name =  'window-rivet'
+const plugins = [
+    typescript({
+        target: "es5"
+    }),
+    replace({
+        BUILD_TARGET: process.env.BUILD_TARGET,
+        'process.env.NODE_ENV': '"production"',
+        '__VERSION__': packageConfig.version,
+        '__BUILD_FORMAT__': 'umd',
+    }),
+    resolve({ jsnext: true, preferBuiltins: true, browser: true }),
+    commonjs(),
+    rollupJson({ include: 'node_modules/**' }),
+    babel({
+        exclude: 'node_modules/**'
+    }),
+    eslint({
+        configFile: 'eslint.config'
+    }),
+    cleanup()
+]
 
 const builds = {
     'web-js': {
-        dest: `dist/${name}.js`,
-        entry: 'src/platform/web/entry-web.js',
-        format: 'es',
-        name: name,
-        sourceMap: 'inline',
-        banner,
-        plugins: [
-            typescript({
-                target: "es5"
-            }),
-            replace({
-                BUILD_TARGET: process.env.BUILD_TARGET,
-                'process.env.NODE_ENV': '"production"',
-                '__VERSION__': config.version,
-                '__BUILD_FORMAT__': 'umd',
-            }),
-            resolve({ jsnext: true, preferBuiltins: true, browser: true }),
-            commonjs(),
-            rollupJson({ include: 'node_modules/**' }),
-            babel({
-                exclude: 'node_modules/**'
-            }),
-            eslint({
-                configFile: 'eslint.config'
-            }),
-            cleanup()
-        ]
+        dest: `dist/${name}-umd.js`,
+        format: 'umd',
+    },
+    'web-min-js': {
+        dest: `dist/${name}-umd-min.js`,
+        format: 'umd',
+        plugins: 
+            plugins.concat(
+                [
+                    uglify({
+                        output: {
+                            comments: function (node, comment) {
+                                var text = comment.value;
+                                var type = comment.type;
+                                if (type == "comment2") {
+                                    // multiline comment
+                                    return /@preserve|@license|@cc_on/i.test(text);
+                                }
+                            }
+                        }
+                    })
+                ]
+            ),
+        
+    },
+    'module-js': {
+        dest: `dist/${name}-es.js`,
+        format: 'es'
     }
 }
 
-function getConfiguration(buildTarget) {
-    let options = builds[buildTarget]
+function getConfiguration(buildTarget) {  
+    let options = Object.assign({
+        banner,
+        entry: 'src/platform/web/entry-web.js',
+        name: name,
+        plugins: plugins,
+        sourceMap: 'inline',
+    } , builds[buildTarget])
     let config = {
         external: [],
         input: options.entry,

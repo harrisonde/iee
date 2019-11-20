@@ -2,8 +2,9 @@
     "name": "@cidekar/window-rivet",
     "version": "1.0.0",
     "description": "Window Rivet is a zero-dependency module for transparent bidirectional communication across origins by fastening separate domains together using the Window object.",
-    "main": "dist/iee.js",
-    "author": "Cidekar",
+    "main": "dist/window-rivet.js",
+    "browser": "dist/window-rivet-umd.js",
+    "author": "Cidekar, LLC",
     "license": "Apache-2.0",
     "homepage": "https://github.com/cidekar/window-rivet",
     "bugs": "https://github.com/cidekar/window-rivet/issues",
@@ -12,7 +13,7 @@
         "type": "git"
     },
     "scripts": {
-        "build": "rollup --config ./config.js --environment BUILD_TARGET:web-js",
+        "build": "rollup --config ./config.js",
         "docs": "./node_modules/.bin/typedoc --disableOutputCheck --ignoreCompilerErrors --excludeExternals --out docs src --exclude \"node_modules/**/*\" --module umd --theme minimal",
         "test": "jest",
         "lint": "./node_modules/.bin/eslint **/*.ts -c eslint.config --no-ignore"
