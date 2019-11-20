@@ -91,7 +91,7 @@ Domain B
 
 ```
 #### What version should a developer use?
-Window Rivet is compiled for use in the browser and Node. To find the right version for your use case take a look at the [build files](/dist/).
+Window Rivet is compiled for use in the browser and Node. To find the right version for your use case take a look at the [build files definition table](/dist/).
 
 ## API
 ### Configuration
