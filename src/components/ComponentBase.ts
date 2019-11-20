@@ -1,6 +1,7 @@
 import { AbstractComponentBase } from '../abstract/Component'
 import { SystemHooks } from '../core/SystemHooks'
-import { Kernel } from '../core/Kernel';
+//import { Kernel } from '../core/Kernel';
+import { Configuration } from '../core/Configuration'
 
 // TODO
 import * as LOGGER from '../core/logger'
@@ -21,18 +22,18 @@ export class ComponentBase implements AbstractComponentBase {
     warningOrigin = null
 
     constructor(componentType: string) {
-        this.warningOrigin = Kernel.getConfiguration('warningOrigin')
+        this.warningOrigin = Configuration.getConfiguration('warningOrigin')
 
         // TOD0
         // Move this into the Configs default and allow developer to set
         // Thus the component is not bound to origin by type.
         if (componentType === 'dispatcher') {
             this.target = window.parent
-            this.targetOrigin = Kernel.getConfiguration('receiverOrigin')
+            this.targetOrigin = Configuration.getConfiguration('receiverOrigin')
         }
         else {
             this.target = window
-            this.targetOrigin = Kernel.getConfiguration('dispatcherOrigin')
+            this.targetOrigin = Configuration.getConfiguration('dispatcherOrigin')
         }
 
         
@@ -121,7 +122,7 @@ export class ComponentBase implements AbstractComponentBase {
 
     trusted = (origin: string): boolean => {
         let isTrusted = false
-        const originWhitelist = Kernel.getConfiguration('dispatcherOrigin')
+        const originWhitelist = Configuration.getConfiguration('dispatcherOrigin')
 
         if (typeof originWhitelist === 'string' && originWhitelist === '*') {
             isTrusted = true

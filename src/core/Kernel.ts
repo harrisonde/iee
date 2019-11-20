@@ -24,10 +24,4 @@ export class Kernel extends Configuration implements AbstractKernel{
         SystemHooks.call('mounted')
 
     }
-
-    /**
-     * List the configuration of the system.
-     */
-    listSystemConfiguration = (): object => Configuration.listConfiguration()
-
 } 

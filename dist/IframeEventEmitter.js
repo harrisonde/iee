@@ -1,212 +1,370 @@
 /**!
- * @cidekar/iframe-event-emitter version 1.0.0
+ * @cidekar/window-rivet version 1.0.0
  * (c) 2014-2019 Cidekar
  * @license Released under the Apache-2.0 license.
  */
-const CONFIGS = {
-  component: undefined,
-  dispatcherOrigin: '*',
-  receiverOrigin: '*',
-  silent: 'web-js' === 'web-min-js'
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
 };
-var store = {};
-function get(config) {
-  return store[config];
-}
-function set(options) {
-  store = Object.assign(CONFIGS, options);
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
+var Configuration = /** @class */function () {
+    function Configuration() {
+        this.configuration = {
+            component: undefined,
+            dispatcherOrigin: '*',
+            receiverOrigin: '*',
+            silent: false,
+            warningOrigin: true
+        };
+        this.setConfiguration = function (configurationOptions) {
+            try {
+                Configuration.store.cache = Object.assign(Configuration.store.cache, configurationOptions);
+                return true;
+            } catch (error) {
+                return error;
+            }
+        };
+        Configuration.store.cache = this.configuration;
+    }
+    Configuration.store = {
+        cache: {},
+        hooks: {}
+    };
+    Configuration.getConfiguration = function (configurationKey) {
+        if (configurationKey) return Configuration.store.cache[configurationKey];
+        return {};
+    };
+    Configuration.listConfiguration = function (vaultKey) {
+        if (vaultKey === void 0) {
+            vaultKey = 'cache';
+        }
+        return Configuration.store[vaultKey];
+    };
+    Configuration.putConfiguration = function (vault, configuration) {
+        if (vault === void 0) {
+            vault = 'cache';
+        }
+        Object.assign(Configuration.store[vault], configuration);
+    };
+    return Configuration;
+}();
+
+/*eslint no-console: ["error", { allow: ["warn"] }] */
+/**
+ * Log a message to the console.
+ * @param {String} message A message to display in the console
+ * @return null
+ */
 function log(message) {
-    if (!get('silent')) {
-        console.warn(new Date(), '\n', message);
+    if (!Configuration.getConfiguration('silent')) {
+        console.warn(message);
     }
 }
 
-const HOOKS = ['created', 'mounted'];
-const STORE = [];
-function bind() {
-    let callback = function (arg) {
-        if (typeof arg === 'function') {
-            arg.apply(this, [arg]);
+var SystemHooks = /** @class */function () {
+    function SystemHooks() {}
+    SystemHooks.bind = function () {
+        var callback = function (arg) {
+        };
+        var hooks = ['created', 'mounted'];
+        hooks.forEach(function (hook) {
+            try {
+                SystemHooks.register(hook, callback);
+            } catch (e) {
+                log(e);
+            }
+        });
+    };
+    /**
+     * Start system, prepare to enter, record, and processed the configuration.
+     */
+    SystemHooks.boot = function () {
+        SystemHooks.bind();
+        SystemHooks.call('created');
+    };
+    /**
+     * Fire and update a hook related event bound into the system store.
+     */
+    SystemHooks.call = function (name, args) {
+        var hook = Configuration.listConfiguration('hooks')[name];
+        if (typeof hook != 'undefined') {
+            if (hook.callback) {
+                hook.callback.apply(SystemHooks, [args]);
+            }
+            hook.lifecycle = true;
+            hook.lineage = hook.lineage.concat(['ready']);
         }
     };
-    HOOKS.forEach(function (hook) {
+    /**
+     * Enter and record a hook related event into the system store.
+     */
+    SystemHooks.register = function (name, callback, lifecycle) {
+        var _a;
+        if (callback === void 0) {
+            callback = null;
+        }
+        if (lifecycle === void 0) {
+            lifecycle = 'register';
+        }
         try {
-            register(hook, callback, true);
+            var hook = Configuration.listConfiguration('hooks')[name];
+            if (typeof hook === 'undefined') {
+                var hook_1 = (_a = {}, _a[name] = {
+                    lifecycle: lifecycle,
+                    callback: callback,
+                    lineage: [lifecycle]
+                }, _a);
+                Configuration.putConfiguration('hooks', hook_1);
+            } else if (typeof hook != 'undefined') {
+                hook.callback = callback, hook.lifecycle = lifecycle;
+                hook.lineage = hook.lineage.concat([lifecycle]);
+            }
         } catch (e) {
             log(e);
         }
-    });
-}
-function call(name, args) {
-    if (typeof STORE[name] != 'undefined') {
-        STORE[name].callback.apply(this, [args]);
-    }
-}
-function register(name, callback, lifecycle) {
-    try {
-        if (!callback) {
-            throw new Error('attempt to register ' + name + ' hook without callback');
+    };
+    /**
+     * Helper method to confirm the system is ready to handle communication.
+     */
+    SystemHooks.ready = function () {
+        var isReady = false;
+        var systemHooks = Configuration.listConfiguration('hooks');
+        if (!systemHooks) return isReady;
+        if (systemHooks['created'].lifecycle && systemHooks['mounted'].lifecycle) {
+            isReady = true;
         }
-        if (typeof STORE[name] === 'undefined') {
-            STORE[name] = {
-                callback: callback
-            };
-            if (lifecycle) {
-                STORE[name].lifecycle = 'register';
+        return isReady;
+    };
+    return SystemHooks;
+}();
+
+// Extend Component base with sub components 
+// this will provide fallback methods.
+var ComponentBase = /** @class */function () {
+    function ComponentBase(componentType) {
+        var _this = this;
+        this.supported_message_types = ['string', 'object'];
+        this.target = null;
+        this.targetOrigin = null;
+        this.warningOrigin = null;
+        this.bind = function () {
+            _this.listen('message', _this.handler);
+        };
+        this.listen = function (eventType, callback) {
+            try {
+                _this.target.addEventListener(eventType, callback);
+            } catch (e) {
+                log(e);
             }
+        };
+        this.handler = function (event) {
+            // Validate origin 
+            if (!_this.trusted(event.origin)) {
+                return;
+            }
+            // Validate
+            if (event.data) {
+                try {
+                    if (_this.isSupported(event) && SystemHooks.ready()) {
+                        if (_this.targetOrigin === '*' && _this.warningOrigin) {
+                            log('[Receiver Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                        }
+                        log(event);
+                        _this.emit(event.data.event, event.data);
+                    }
+                } catch (e) {
+                    log(e);
+                }
+            }
+        };
+        this.emit = function (type, message) {
+            try {
+                var eventToEmit = new Event(type);
+                Object.assign(eventToEmit, message);
+                _this.target.dispatchEvent(eventToEmit);
+            } catch (e) {
+                log(e);
+            }
+        };
+        this.isSupported = function (event) {
+            var supported = false;
+            for (var i = 0; i < _this.supported_message_types.length; i++) {
+                if (_this.supported_message_types[i] === typeof event.data) {
+                    supported = true;
+                    break;
+                }
+            }
+            return supported;
+        };
+        this.message = function (payload) {
+            try {
+                if (!payload) {
+                    throw new Error('attempt to dispatch without payload');
+                } else if (!payload.event) {
+                    throw new Error('attempt to dispatch without defining an event');
+                }
+                if (_this.targetOrigin === '*' && _this.warningOrigin) {
+                    log('[Dispatcher Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                }
+                _this.target.postMessage(payload, _this.targetOrigin);
+            } catch (e) {
+                log(e);
+            }
+        };
+        this.trusted = function (origin) {
+            var isTrusted = false;
+            var originWhitelist = Configuration.getConfiguration('dispatcherOrigin');
+            if (typeof originWhitelist === 'string' && originWhitelist === '*') {
+                isTrusted = true;
+            }
+            if (typeof originWhitelist === 'object') {
+                for (var i = 0; i < originWhitelist.length; i++) {
+                    if (originWhitelist[i] === origin) {
+                        isTrusted = true;
+                        break;
+                    }
+                }
+            }
+            return isTrusted;
+        };
+        this.warningOrigin = Configuration.getConfiguration('warningOrigin');
+        // TOD0
+        // Move this into the Configs default and allow developer to set
+        // Thus the component is not bound to origin by type.
+        if (componentType === 'dispatcher') {
+            this.target = window.parent;
+            this.targetOrigin = Configuration.getConfiguration('receiverOrigin');
         } else {
-            throw new Error('attempt to re-register ' + name);
+            this.target = window;
+            this.targetOrigin = Configuration.getConfiguration('dispatcherOrigin');
         }
-    } catch (e) {
-        log(e);
+        SystemHooks.call(componentType);
+        this.bind(componentType);
     }
-}
-function list$1(name) {
-    return name ? STORE[name] : STORE;
-}
-function boot() {
-    bind();
-    created();
-    mounted();
-}
-function created() {
-    let HOOK = 'created';
-    call(HOOK, function () {
-        STORE[HOOK].lifecycle = true;
-    });
-}
-function mounted() {
-    let HOOK = 'mounted';
-    call(HOOK, function () {
-        STORE[HOOK].lifecycle = true;
-    });
-}
-
-function boot$1() {
-    let callback = function (arg) {
-        if (typeof arg === 'function') {
-            arg.apply(this, [arg]);
-        }
+    /**
+    * Setup component, change specific behaviors, and enable or disable features.
+    */
+    ComponentBase.boot = function (componentType) {
+        var componentName = componentType ? 'dispatcher' : 'receiver';
+        SystemHooks.register(componentName, null, 'boot');
+        var callback = function (arg) {
+        };
+        SystemHooks.register(componentName, callback);
     };
-    register('dispatched', callback);
-}
-const TARGET = window.parent;
-function message(payload) {
-    try {
-        if (!payload) {
-            throw new Error('attempt to dispatch without payload');
-        } else if (!payload.event) {
-            throw new Error('attempt to dispatch without defining an event');
-        }
-        TARGET.postMessage(payload, get('receiverOrigin'));
-    } catch (e) {
-        log(e);
-    }
-}
+    return ComponentBase;
+}();
 
-const TYPES = [{
-    type: 'message',
-    listener: handler
-}, {
-    type: 'build',
-    listener: on
-}];
-const TARGET$1 = window;
-function boot$2() {
-    let callback = function (arg) {
-        if (typeof arg === 'function') {
-            arg.apply(this, [arg]);
-        }
+var Dispatcher = /** @class */function (_super) {
+    __extends(Dispatcher, _super);
+    function Dispatcher() {
+        return _super.call(this, 'dispatcher') || this;
+    }
+    return Dispatcher;
+}(ComponentBase);
+
+var Receiver = /** @class */function (_super) {
+    __extends(Receiver, _super);
+    function Receiver() {
+        var _this = _super.call(this, 'receiver') || this;
+        _this.handler = function (event) {
+            if (!_this.trusted(event.origin)) {
+                return;
+            }
+            if (event.data) {
+                try {
+                    if (_this.isSupported(event) && SystemHooks.ready()) {
+                        if (_this.targetOrigin === '*' && _this.warningOrigin) {
+                            log('[Receiver Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                        }
+                        log(event);
+                        _this.emit(event.data.event, event.data);
+                    }
+                } catch (e) {
+                    log(e);
+                }
+            }
+        };
+        _this.message = function (payload, event) {
+            try {
+                if (!payload) {
+                    throw new Error('attempt to dispatch without payload');
+                } else if (!payload.event) {
+                    throw new Error('attempt to dispatch without defining an event');
+                }
+                if (_this.targetOrigin === '*' && _this.warningOrigin) {
+                    log('[Dispatcher Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                }
+                if (event) {
+                    event.source.postMessage(payload, event.origin);
+                } else {
+                    _this.target.postMessage(payload, _this.targetOrigin);
+                }
+            } catch (e) {
+                log(e);
+            }
+        };
+        return _this;
+    }
+    Receiver.boot = function () {
+        ComponentBase.boot('receiver');
     };
-    register('received', callback);
-    register$1();
-}
-function register$1() {
-    TYPES.forEach(function (type) {
-        try {
-            on(type.type, type.listener);
-        } catch (e) {
-            log(e);
-        }
-    });
-}
-function on(type, callback) {
-    try {
-        TARGET$1.addEventListener(type, callback);
-    } catch (e) {
-        log(e);
+    return Receiver;
+}(ComponentBase);
+
+var Kernel = /** @class */function (_super) {
+    __extends(Kernel, _super);
+    function Kernel() {
+        var _this = _super.call(this) || this;
+        _this.boot = function (configuration) {
+            _this.setConfiguration(configuration);
+            SystemHooks.boot();
+            Dispatcher.boot();
+            Receiver.boot();
+            SystemHooks.call('mounted');
+        };
+        /**
+         * List the configuration of the system.
+         */
+        _this.listSystemConfiguration = function () {
+            return Configuration.listConfiguration();
+        };
+        return _this;
     }
-}
-const SUPPORTED_MESSAGES_TYPE = ['string', 'object'];
-function handler(event) {
-    if (!trused(event.origin)) {
-        return;
-    }
-    if (event.data) {
-        try {
-            if (isSupported(event) && list$1('created').lifecycle === true && list$1('mounted').lifecycle === true) {
-                log(event);
-                emit(event.data.event, event.data);
-            }
-        } catch (e) {
-            log(e);
-        }
-    }
-    function isSupported(MessageEvent) {
-        var eventType = typeof MessageEvent.data;
-        for (var i = 0; i < SUPPORTED_MESSAGES_TYPE.length; i++) {
-            if (SUPPORTED_MESSAGES_TYPE[i] === eventType) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-function trused(origin) {
-    let originWhitelist = get('dispatcherOrigin');
-    if (typeof originWhitelist === 'string' && originWhitelist === '*') {
-        return true;
-    }
-    if (typeof originWhitelist === 'object') {
-        for (var i = 0; i < originWhitelist.length; i++) {
-            if (originWhitelist[i] === origin) {
-                return true;
-            }
-        }
-    }
-    log('received untrused message from ' + origin);
-    return false;
-}
-function emit(type, message) {
-    try {
-        var eventToEmit = new Event(type);
-        Object.assign(eventToEmit, message);
-        TARGET$1.dispatchEvent(eventToEmit);
-    } catch (e) {
-        log(e);
-    }
+    return Kernel;
+}(Configuration);
+
+var SystemKernel = new Kernel();
+function Rivet(options) {
+    SystemKernel.boot(options);
+    this.dispatcher = Dispatcher;
+    this.receiver = Receiver;
 }
 
-function boot$3() {
-    set(this);
-    boot();
-    boot$1();
-    boot$2();
-}
+Rivet.version = '1.0.0';
 
-function Iee(options) {
-    boot$3.apply(options);
-    if (options.component === 'dispatcher') {
-        this.message = message;
-    } else if (options.component === 'receiver') {
-        this.on = on;
-    } else {
-        log('did you register a component?');
-    }
-}
-
-Iee.version = '1.0.0';
-
-export default Iee;
+export default Rivet;

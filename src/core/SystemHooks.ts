@@ -1,5 +1,6 @@
 import * as LOGGER from './logger'
-import { Kernel } from './Kernel'
+//import { Kernel } from './Kernel'
+import { Configuration } from './Configuration'
 
 export class SystemHooks {
 
@@ -33,7 +34,7 @@ export class SystemHooks {
      * Fire and update a hook related event bound into the system store.
      */
     static call = (name: string, args?: []): void => {
-        const hook = Kernel.listConfiguration('hooks')[name]
+        const hook = Configuration.listConfiguration('hooks')[name]
         if (typeof hook != 'undefined') {
             if (hook.callback){
                 hook.callback.apply(SystemHooks, [args])
@@ -48,7 +49,7 @@ export class SystemHooks {
      */
     static register = (name: string, callback: Function = null, lifecycle = 'register'): void => {
         try {
-            const hook = Kernel.listConfiguration('hooks')[name]
+            const hook = Configuration.listConfiguration('hooks')[name]
 
             if (typeof hook === 'undefined') {
                 const hook = {
@@ -58,7 +59,7 @@ export class SystemHooks {
                         lineage: [lifecycle]
                     }
                 }
-                Kernel.putConfiguration('hooks', hook)
+                Configuration.putConfiguration('hooks', hook)
             } else if (typeof hook != 'undefined') {
                 hook.callback = callback,
                 hook.lifecycle = lifecycle
@@ -74,7 +75,7 @@ export class SystemHooks {
      */
     static ready = (): boolean => {
         let isReady = false
-        const systemHooks = Kernel.listConfiguration('hooks')
+        const systemHooks = Configuration.listConfiguration('hooks')
         if (!systemHooks) return isReady
         if (systemHooks['created'].lifecycle && systemHooks['mounted'].lifecycle){
             isReady = true
