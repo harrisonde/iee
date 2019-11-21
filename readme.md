@@ -14,7 +14,7 @@ Domain A
     const Rivet = require('@cidekar/rivet')
 
     // New-up an instance if rivet 
-    const rivet = new Rivet()
+    const rivet = new rivet()
     
     // New-up the dispatcher
     const dispatcher = new rivet.dispatcher();
@@ -31,7 +31,7 @@ Domain B
     const Rivet = require('@cidekar/rivet')
 
     // New-up an instance if rivet 
-    const rivet = new Rivet()
+    const rivet = new rivet()
 
     // New-up the receiver
     const receiver = new rivet.receiver();
@@ -49,7 +49,7 @@ Domain A
     const Rivet = require('@cidekar/rivet')
 
     // New-up an instance if rivet 
-    const rivet = new Rivet()
+    const rivet = new rivet()
     
     // New-up the dispatcher
     const dispatcher = new rivet.dispatcher();
@@ -71,7 +71,7 @@ Domain B
     const Rivet = require('@cidekar/rivet')
 
     // New-up an instance of rivet 
-    const rivet = new Rivet()
+    const rivet = new rivet()
 
     // New-up the receiver
     const receiver = new rivet.receiver();
@@ -95,20 +95,20 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 
 ## API
 ### Configuration
-| Option | Default | Description   | 
-| ------------- | ------------- | ------------- |
-| Dispatcher Origin | * | The origin of Dispatcher component. |
-| Receiver Origin | * | The origin of Receiver component.   |
-| Origin Warning  | True | Display configuration waring in console; origin "*" exposes your application to a XSS attack vector. |
+| Argument          | Default   | Description   | 
+| ----------------- | --------- | ------------------------------------------------------- |
+| Dispatcher Origin | ```["*"]```   | The origin of Dispatcher component.                     |
+| Receiver Origin   | ```["*"]```   | The origin of Receiver component.                       |
+| Origin Warning    | ```true```      | Display configuration waring in console.                |
 
 ### Components
-| Type     | Description   | 
+| Type           | Description   | 
 | -------------  | ------------- |
 | Dispatcher     | Create, serialize and transfer messages. |
 | Receiver       | Listen, validate, and handel messages. |
 
 ### Events
-| Type         | Description   | 
+| Type           | Description   | 
 | -------------  | ------------- |
 | Message        |  Message a target; { event: string, and message: string}  |
 | Listen         |  Listen for a message; { event: string, message: string } |

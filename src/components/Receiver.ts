@@ -19,7 +19,7 @@ export class Receiver extends ComponentBase{
             try {
                 if ( this.isSupported(event) && SystemHooks.ready()){
                     if (this.targetOrigin === '*' && this.warningOrigin) {
-                        LOGGER.log('[Receiver Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.')
+                        LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
                     }
                     LOGGER.log(event)
                     this.emit(event.data.event, event.data)
@@ -40,7 +40,7 @@ export class Receiver extends ComponentBase{
             }
 
             if (this.targetOrigin === '*' && this.warningOrigin) {
-                LOGGER.log('[Dispatcher Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.')
+                LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
             }
             
             if(event){

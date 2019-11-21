@@ -6,7 +6,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global['window-rivet'] = factory());
+    (global.rivet = factory());
 }(this, (function () { 'use strict';
 
     /*! *****************************************************************************
@@ -178,6 +178,7 @@
             this.target = null;
             this.targetOrigin = null;
             this.warningOrigin = null;
+            this.componentType = null;
             this.bind = function () {
                 _this.listen('message', _this.handler);
             };
@@ -198,7 +199,7 @@
                     try {
                         if (_this.isSupported(event) && SystemHooks.ready()) {
                             if (_this.targetOrigin === '*' && _this.warningOrigin) {
-                                log('[Receiver Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                                log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                             }
                             log(event);
                             _this.emit(event.data.event, event.data);
@@ -235,7 +236,7 @@
                         throw new Error('attempt to dispatch without defining an event');
                     }
                     if (_this.targetOrigin === '*' && _this.warningOrigin) {
-                        log('[Dispatcher Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                        log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                     }
                     _this.target.postMessage(payload, _this.targetOrigin);
                 } catch (e) {
@@ -258,6 +259,7 @@
                 }
                 return isTrusted;
             };
+            this.componentType = componentType;
             this.warningOrigin = Configuration.getConfiguration('warningOrigin');
             // TOD0
             // Move this into the Configs default and allow developer to set
@@ -305,7 +307,7 @@
                     try {
                         if (_this.isSupported(event) && SystemHooks.ready()) {
                             if (_this.targetOrigin === '*' && _this.warningOrigin) {
-                                log('[Receiver Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                                log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                             }
                             log(event);
                             _this.emit(event.data.event, event.data);
@@ -323,7 +325,7 @@
                         throw new Error('attempt to dispatch without defining an event');
                     }
                     if (_this.targetOrigin === '*' && _this.warningOrigin) {
-                        log('[Dispatcher Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.');
+                        log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                     }
                     if (event) {
                         event.source.postMessage(payload, event.origin);

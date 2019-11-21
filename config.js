@@ -5,9 +5,9 @@ import { uglify } from 'rollup-plugin-uglify';
 import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
-import rollupJson from 'rollup-plugin-json'
+import rollupJson from 'rollup-plugin-json';
 import typescript from 'rollup-plugin-typescript';
-const packageConfig = require('./package.json')
+const packageConfig = require('./package.json');
 
 const banner =
     '/**!\n' +
@@ -17,6 +17,7 @@ const banner =
     ' */'
 
 const name =  'window-rivet'
+
 const plugins = [
     typescript({
         target: "es5"
@@ -51,6 +52,9 @@ const builds = {
             plugins.concat(
                 [
                     uglify({
+                        compress: {
+                            drop_console: true
+                        },
                         output: {
                             comments: function (node, comment) {
                                 var text = comment.value;
@@ -61,7 +65,7 @@ const builds = {
                                 }
                             }
                         }
-                    })
+                    })                    
                 ]
             ),
         
@@ -87,7 +91,7 @@ function getConfiguration(buildTarget) {
             file: options.dest,
             format: options.format,
             banner: options.banner,
-            name: options.name || 'Deploy'
+            name: 'rivet'
         },
         plugins: options.plugins
     }
