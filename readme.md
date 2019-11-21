@@ -95,11 +95,11 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 
 ## API
 ### Configuration
-| Argument          | Default   | Description   | 
-| ----------------- | --------- | ------------------------------------------------------- |
-| Dispatcher Origin | ```["*"]```   | The origin of Dispatcher component.                     |
-| Receiver Origin   | ```["*"]```   | The origin of Receiver component.                       |
-| Origin Warning    | ```true```      | Display configuration waring in console.                |
+| Name              | Argument  |  Default    | Description   |                                  
+| ----------------- | --------  | ---------- | ------------- |
+| Dispatcher Origin | ```dispatcherOrigin``` | ```["*"]```| The origin of Dispatcher component. |
+| Receiver Origin   | ```receiverOrigin```   | ```["*"]```| The origin of Receiver component.   |
+| Origin Warning    |  ```originWarning```   | ```true``` | Display configuration waring in console.  |
 
 ### Components
 | Type           | Description   | 
