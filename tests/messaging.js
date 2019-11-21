@@ -3,7 +3,7 @@ beforeAll(() => {
     console.warn = jest.fn();
 })
 
-describe('The framework can communicate across origin; one-way messaging.', () => {
+describe('The framework can communicate across origin; transparent bidirectional communication.', () => {
 
     // Setup 
     const Rivet = require('../src/core/index').default
@@ -35,7 +35,7 @@ describe('The framework can communicate across origin; one-way messaging.', () =
     })
 
 
-    test('Receiver can reply to authorized message.', (done) => {
+    test('Receiver can reply to authorized message from the dispatcher.', (done) => {
 
         const eventToBeEmitted = {
             event: 'confirm',
