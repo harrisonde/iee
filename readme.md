@@ -100,8 +100,8 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 | ----------------- | --------  | ---------- | ------------- |
 | Dispatcher Origin | ```dispatcherOrigin``` | ```["*"]```| The origin of Dispatcher component. |
 | Receiver Origin   | ```receiverOrigin```   | ```["*"]```| The origin of Receiver component.   |
-| Warning Origin    |  ```warningOrigin```   | ```true``` | Display configuration waring in console; top level.  |
-| Silent            | ```silent```           | ```false``` | Display all cross-origin communication between Window objects.       |
+| Warning Origin    |  ```warningOrigin```   | ```true``` | Display configuration waring in console  |
+| Silent            | ```silent```           | ```false``` | Display all cross-origin communication between Window objects in console.       |
 
 ### Components
 | Type           | [Newable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) | Description |
