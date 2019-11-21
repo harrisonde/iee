@@ -102,10 +102,10 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 | Origin Warning    |  ```originWarning```   | ```true``` | Display configuration waring in console.  |
 
 ### Components
-| Type           | Description   | 
-| -------------  | ------------- |
-| Dispatcher     | Create, serialize and transfer messages. |
-| Receiver       | Listen, validate, and handel messages. |
+| Type           | Description   | [Newable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) |
+| -------------  | ------------- | -------- |
+| Dispatcher     | Create, serialize and transfer messages. | Yes |
+| Receiver       | Listen, validate, and handel messages. | Yes |
 
 ### Events
 | Type           | Description   | 
