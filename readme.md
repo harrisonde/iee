@@ -109,8 +109,8 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 | Dispatcher     | X | Create, serialize, and transfer messages. |
 | Receiver       | X |Listen, validate, and handel messages. |
 
-### Events
-| Type           | Argument   | Description   | 
+### Methods
+| Name           | Argument   | Description   | 
 | -------------  | ---------- | ------------- |
 | Message        |  ```{ event: string, message: string, array, or object }``` | Send a message to a component.  |
 | Listen         |  ```{ event: string, message: string, array, or object }```    | Listen for a message from a component. |
