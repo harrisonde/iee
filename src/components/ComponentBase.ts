@@ -40,8 +40,7 @@ export class ComponentBase implements AbstractComponentBase {
             this.target = window
             this.targetOrigin = Configuration.getConfiguration('dispatcherOrigin')
         }
-
-        
+      
         SystemHooks.call(componentType)
 
         this.bind(componentType)
