@@ -110,8 +110,8 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 ### Events
 | Type           | Argument   | Description   | 
 | -------------  | ---------- | ------------- |
-| Message        |  ```{ event: string, and message: string}``` | Send a message to a component.  |
-| Listen         |  ```{ event: string, message: string }```    | Listen for a message from a component. |
+| Message        |  ```{ event: string, message: string, array, or object }``` | Send a message to a component.  |
+| Listen         |  ```{ event: string, message: string, array, or object }```    | Listen for a message from a component. |
 
 ### Hooks
 | Type           | Life Cycle | Description   | 
