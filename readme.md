@@ -94,6 +94,7 @@ Domain B
 Window Rivet is compiled for use in the browser and Node. To find the right version for your use case take a look at the [build files definition table](/dist/).
 
 ## API
+
 ### Configuration
 | Name              | Argument  |  Default    | Description   |                                  
 | ----------------- | --------  | ---------- | ------------- |
@@ -102,10 +103,10 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 | Origin Warning    |  ```originWarning```   | ```true``` | Display configuration waring in console.  |
 
 ### Components
-| Type           | Description   | [Newable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) |
+| Type           | [Newable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) | Description |
 | -------------  | ------------- | -------- |
-| Dispatcher     | Create, serialize and transfer messages. | Yes |
-| Receiver       | Listen, validate, and handel messages. | Yes |
+| Dispatcher     | X | Create, serialize, and transfer messages. |
+| Receiver       | X |Listen, validate, and handel messages. |
 
 ### Events
 | Type           | Argument   | Description   | 
@@ -130,3 +131,14 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 - The Receiver receives the message and validates the origin and shape. 
 - Authorized messages are synchronously dispatched to the Window firing a callback function with the message from the Dispatcher.
 - The Receiver sends a reply to the Dispatcher with a serialized message.
+
+#### Documentation
+View our documentation by running the TypeDoc generator:
+
+```bash
+    $ yarn docs
+```       
+## License
+Copyright 2019 Cidekar, LLC. All rights reserved.
+
+[Apache License 2.0](./license.md)
