@@ -108,10 +108,10 @@ Window Rivet is compiled for use in the browser and Node. To find the right vers
 | Receiver       | Listen, validate, and handel messages. | Yes |
 
 ### Events
-| Type           | Description   | 
-| -------------  | ------------- |
-| Message        |  Message a target; { event: string, and message: string}  |
-| Listen         |  Listen for a message; { event: string, message: string } |
+| Type           | Argument   | Description   | 
+| -------------  | ---------- | ------------- |
+| Message        |  ```{ event: string, and message: string}``` | Send a message to a component.  |
+| Listen         |  ```{ event: string, message: string }```    | Listen for a message from a component. |
 
 ### Hooks
 | Type           | Life Cycle | Description   | 
