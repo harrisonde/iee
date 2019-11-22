@@ -12,6 +12,7 @@ export class Receiver extends ComponentBase{
     }
     
     handler = (event: object): void => {
+        console.log('R handler called handler', event)
         if (!this.trusted(event.origin)) {
             return
         }
@@ -30,30 +31,30 @@ export class Receiver extends ComponentBase{
         }
     }
 
-    message = (payload, event?): void => {
-        try {
-            if (!payload) {
-                throw new Error('attempt to dispatch without payload')
-            }
-            else if (!payload.event) {
-                throw new Error('attempt to dispatch without defining an event')
-            }
+    // message = (payload, event?): void => {
+    //     try {
+    //         if (!payload) {
+    //             throw new Error('attempt to dispatch without payload')
+    //         }
+    //         else if (!payload.event) {
+    //             throw new Error('attempt to dispatch without defining an event')
+    //         }
 
-            if (this.targetOrigin === '*' && this.warningOrigin) {
-                LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
-            }
+    //         if (this.targetOrigin === '*' && this.warningOrigin) {
+    //             LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
+    //         }
             
-            if(event){
-                event.source.postMessage(payload, event.origin)
-            } else {
-                this.target.postMessage(payload, this.targetOrigin)
-            }
+    //         if(event){
+    //             event.source.postMessage(payload, event.origin)
+    //         } else {
+    //             this.target.postMessage(payload, this.targetOrigin)
+    //         }
             
 
-        } catch (e) {
-            LOGGER.log(e)
-        }
-    }
+    //     } catch (e) {
+    //         LOGGER.log(e)
+    //     }
+    // }
     
     static boot = (): void => { 
         ComponentBase.boot('receiver')

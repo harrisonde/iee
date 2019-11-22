@@ -52,15 +52,18 @@ export class ComponentBase implements AbstractComponentBase {
     }
 
     listen = (eventType: string, callback: Function): void => {
+        
         try {
-            this.target.addEventListener(eventType, callback)
+            console.log(this.componentType, 'assign listener for:', eventType, 'to window')
+            //this.target.addEventListener(eventType, callback)
+            window.addEventListener(eventType, callback)
         } catch (e) {
             LOGGER.log(e)
         }
     }
 
     handler = (event): void => {
-        
+        console.log(this.componentType, 'handler called', event)
         // Validate origin 
         if (!this.trusted(event.origin)) {
             return
@@ -74,7 +77,8 @@ export class ComponentBase implements AbstractComponentBase {
                         LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
                     }
                     LOGGER.log(event)
-                    this.emit(event.data.event, event.data)
+                    //this.emit(event.data.event, event.data)
+                    this.emit(event.data.event, event)
                 }
             } catch (e) {
                 LOGGER.log(e)
@@ -82,11 +86,17 @@ export class ComponentBase implements AbstractComponentBase {
         }
     }
 
-    emit = (type: string, message: object): void => {
+    emit = (type: string, event: object): void => {
         try {
             const eventToEmit = new Event(type)
-            Object.assign(eventToEmit, message)
-            this.target.dispatchEvent(eventToEmit)
+            Object.assign(eventToEmit, { messageEvent: event })
+            console.log(this.componentType, 'dispatchEvent to target with:', eventToEmit)
+            if(this.componentType === 'dispatcher'){
+                window.dispatchEvent(eventToEmit)
+            } else {
+                this.target.dispatchEvent(eventToEmit)
+            }
+            
         } catch (e) {
             LOGGER.log(e)
         }
@@ -103,7 +113,7 @@ export class ComponentBase implements AbstractComponentBase {
         return supported
     }
 
-    message = (payload): void => {
+    message = (payload, event?): void => {
         
         try {
 
@@ -117,7 +127,15 @@ export class ComponentBase implements AbstractComponentBase {
             if (this.targetOrigin === '*' && this.warningOrigin) {
                 LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
             }
-            this.target.postMessage(payload, this.targetOrigin)
+            
+            console.log(this.componentType, 'pre send message', event)
+            if (event) {
+                console.log(this.componentType, 'will send response with event.source', payload, 'event.origin', event.messageEvent.origin)
+                event.messageEvent.source.postMessage(payload, event.messageEvent.origin)
+            } else {
+                console.log(this.componentType, 'will send a message to the target', payload)
+                this.target.postMessage(payload, this.targetOrigin)
+            }
 
         } catch (e) {
             LOGGER.log(e)
