@@ -26,8 +26,8 @@ describe('The framework can communicate across origin; transparent bidirectional
         }
         
         receiver.listen('confirm', function (event) {
-            expect(event.message).toBe(eventToBeEmitted.message)
-            expect(event.event).toBe(eventToBeEmitted.event)    
+            expect(event.messageEvent.data.message).toBe(eventToBeEmitted.message)
+            expect(event.messageEvent.data.event).toBe(eventToBeEmitted.event)    
             done()      
         });
 
@@ -56,8 +56,8 @@ describe('The framework can communicate across origin; transparent bidirectional
         });
         
         dispatcher.listen('response', function (event) {
-            expect(event.message.toString()).toBe(eventToBeReceived.message)
-            expect(event.event.toString()).toBe(eventToBeReceived.event)
+            expect(event.messageEvent.data.message.toString()).toBe(eventToBeReceived.message)
+            expect(event.messageEvent.data.event.toString()).toBe(eventToBeReceived.event)
             done()
         })
 

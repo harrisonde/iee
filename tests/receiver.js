@@ -72,10 +72,10 @@ describe('The receiver component is well formed.', () => {
 
         const receiver = new Receiver()
         receiver.handler(mockEvent)        
-       
+    
         const Event = global.dispatchEvent.mock.calls.flat().pop()
-        expect(Event.event).toMatch(mockEvent.data.event);
-        expect(Event.message).toMatch(mockEvent.data.message);
+        expect(Event.messageEvent.data.event).toMatch(mockEvent.data.event);
+        expect(Event.messageEvent.data.message).toMatch(mockEvent.data.message);
         
     })
 })

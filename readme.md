@@ -39,6 +39,7 @@ Domain B
     // Receive a message on domain B.
     receiver.listen('confirm', function(event){
         //... Handle message 
+        // event.messageEvent.data
     });
 ```
 
@@ -57,6 +58,7 @@ Domain A
     // Receive a message from domain B.
     dispatcher.listen('response', function (event) {
         //... handle the reply 
+        // event.messageEvent.data
     })
 
     // Dispatch a message from domain A.

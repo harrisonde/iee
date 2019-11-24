@@ -178,13 +178,12 @@ var ComponentBase = /** @class */function () {
         };
         this.listen = function (eventType, callback) {
             try {
-                _this.target.addEventListener(eventType, callback);
+                window.addEventListener(eventType, callback);
             } catch (e) {
                 log(e);
             }
         };
         this.handler = function (event) {
-            console.log('CB handler called', event);
             // Validate origin 
             if (!_this.trusted(event.origin)) {
                 return;
@@ -197,18 +196,23 @@ var ComponentBase = /** @class */function () {
                             log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                         }
                         log(event);
-                        _this.emit(event.data.event, event.data);
+                        //this.emit(event.data.event, event.data)
+                        _this.emit(event.data.event, event);
                     }
                 } catch (e) {
                     log(e);
                 }
             }
         };
-        this.emit = function (type, message) {
+        this.emit = function (type, event) {
             try {
                 var eventToEmit = new Event(type);
-                Object.assign(eventToEmit, message);
-                _this.target.dispatchEvent(eventToEmit);
+                Object.assign(eventToEmit, { messageEvent: event });
+                if (_this.componentType === 'dispatcher') {
+                    window.dispatchEvent(eventToEmit);
+                } else {
+                    _this.target.dispatchEvent(eventToEmit);
+                }
             } catch (e) {
                 log(e);
             }
@@ -234,10 +238,8 @@ var ComponentBase = /** @class */function () {
                     log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                 }
                 if (event) {
-                    console.log('send with event postmessage', event);
-                    event.source.postMessage(payload, _this.targetOrigin);
+                    event.messageEvent.source.postMessage(payload, event.messageEvent.origin);
                 } else {
-                    console.log('send with window postmessage');
                     _this.target.postMessage(payload, _this.targetOrigin);
                 }
             } catch (e) {
@@ -299,48 +301,8 @@ var Dispatcher = /** @class */function (_super) {
 var Receiver = /** @class */function (_super) {
     __extends(Receiver, _super);
     function Receiver() {
-        var _this = _super.call(this, 'receiver') || this;
-        _this.handler = function (event) {
-            console.log('R handler called handler', event);
-            if (!_this.trusted(event.origin)) {
-                return;
-            }
-            if (event.data) {
-                try {
-                    if (_this.isSupported(event) && SystemHooks.ready()) {
-                        if (_this.targetOrigin === '*' && _this.warningOrigin) {
-                            log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
-                        }
-                        log(event);
-                        _this.emit(event.data.event, event.data);
-                    }
-                } catch (e) {
-                    log(e);
-                }
-            }
-        };
-        return _this;
+        return _super.call(this, 'receiver') || this;
     }
-    // message = (payload, event?): void => {
-    //     try {
-    //         if (!payload) {
-    //             throw new Error('attempt to dispatch without payload')
-    //         }
-    //         else if (!payload.event) {
-    //             throw new Error('attempt to dispatch without defining an event')
-    //         }
-    //         if (this.targetOrigin === '*' && this.warningOrigin) {
-    //             LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
-    //         }
-    //         if(event){
-    //             event.source.postMessage(payload, event.origin)
-    //         } else {
-    //             this.target.postMessage(payload, this.targetOrigin)
-    //         }
-    //     } catch (e) {
-    //         LOGGER.log(e)
-    //     }
-    // }
     Receiver.boot = function () {
         ComponentBase.boot('receiver');
     };

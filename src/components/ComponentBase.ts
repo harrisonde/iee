@@ -6,6 +6,12 @@ import { Configuration } from '../core/Configuration'
 // TODO
 import * as LOGGER from '../core/logger'
 
+
+interface MessageEvent {
+    data: any,
+    origin: string
+}
+
 // Extend Component base with sub components 
 // this will provide fallback methods.
 export class ComponentBase implements AbstractComponentBase {
@@ -43,7 +49,7 @@ export class ComponentBase implements AbstractComponentBase {
       
         SystemHooks.call(componentType)
 
-        this.bind(componentType)
+        this.bind()
     }
 
 
@@ -54,8 +60,6 @@ export class ComponentBase implements AbstractComponentBase {
     listen = (eventType: string, callback: Function): void => {
         
         try {
-            console.log(this.componentType, 'assign listener for:', eventType, 'to window')
-            //this.target.addEventListener(eventType, callback)
             window.addEventListener(eventType, callback)
         } catch (e) {
             LOGGER.log(e)
@@ -63,7 +67,7 @@ export class ComponentBase implements AbstractComponentBase {
     }
 
     handler = (event): void => {
-        console.log(this.componentType, 'handler called', event)
+        
         // Validate origin 
         if (!this.trusted(event.origin)) {
             return
@@ -77,7 +81,6 @@ export class ComponentBase implements AbstractComponentBase {
                         LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
                     }
                     LOGGER.log(event)
-                    //this.emit(event.data.event, event.data)
                     this.emit(event.data.event, event)
                 }
             } catch (e) {
@@ -90,7 +93,7 @@ export class ComponentBase implements AbstractComponentBase {
         try {
             const eventToEmit = new Event(type)
             Object.assign(eventToEmit, { messageEvent: event })
-            console.log(this.componentType, 'dispatchEvent to target with:', eventToEmit)
+        
             if(this.componentType === 'dispatcher'){
                 window.dispatchEvent(eventToEmit)
             } else {
@@ -128,12 +131,10 @@ export class ComponentBase implements AbstractComponentBase {
                 LOGGER.log(`[Window-rivet ${this.componentType} Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.`)
             }
             
-            console.log(this.componentType, 'pre send message', event)
+        
             if (event) {
-                console.log(this.componentType, 'will send response with event.source', payload, 'event.origin', event.messageEvent.origin)
                 event.messageEvent.source.postMessage(payload, event.messageEvent.origin)
             } else {
-                console.log(this.componentType, 'will send a message to the target', payload)
                 this.target.postMessage(payload, this.targetOrigin)
             }
 
@@ -171,7 +172,7 @@ export class ComponentBase implements AbstractComponentBase {
         const callback = (arg): void => {
             if (typeof arg === 'function') {
                 // TODO
-                // Need to fix
+                // Need to implement
                 // arg.apply(Dispatcher, [arg])
             }
         }
