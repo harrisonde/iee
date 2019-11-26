@@ -196,7 +196,6 @@ var ComponentBase = /** @class */function () {
                             log("[Window-rivet " + _this.componentType + " Component] Specify an exact receiver origin, the configuration requires an update! Failing to specify an exact target origin exposes your application to a XSS attack vector.");
                         }
                         log(event);
-                        //this.emit(event.data.event, event.data)
                         _this.emit(event.data.event, event);
                     }
                 } catch (e) {
@@ -275,7 +274,7 @@ var ComponentBase = /** @class */function () {
             this.targetOrigin = Configuration.getConfiguration('dispatcherOrigin');
         }
         SystemHooks.call(componentType);
-        this.bind(componentType);
+        this.bind();
     }
     /**
     * Setup component, change specific behaviors, and enable or disable features.

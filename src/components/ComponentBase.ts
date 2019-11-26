@@ -116,8 +116,7 @@ export class ComponentBase implements AbstractComponentBase {
         return supported
     }
 
-    message = (payload, event?): void => {
-        
+    message = (payload, event?): void => {  
         try {
 
             if (!payload) {
